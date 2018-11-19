@@ -1,0 +1,6 @@
+2018-11-19 07:26:18,752 root         INFO     Starting MainApp
+2018-11-19 07:26:18,754 root         INFO     StockNewsCollector Loaded
+2018-11-19 07:26:18,757 root         INFO     DatabaseUtility Loaded
+2018-11-19 07:26:18,780 root         INFO     StockRater loaded
+2018-11-19 07:26:23,951 root         INFO     Rating TSLA
+2018-11-19 07:27:18,023 root         INFO     Closing DB Connection

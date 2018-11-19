@@ -2,10 +2,12 @@ import re
 import newspaper
 import time
 import logging
+import datetime
 from nltk import tokenize
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from service.stock_news_collector import StockNewsCollector
 from service.db_utility import DatabaseUtility
+from service.agg_score import AggScore
 
 class StockRater(object):
 
@@ -31,43 +33,44 @@ class StockRater(object):
 
         self.logger.info('Rating ' + stock_ticker)
 
-        stock_articles = self.stock_news_collector.collect_articles_for_stock(stock_ticker)
+        agg_score = self.db_utility.gather_agg_score_for_stock_on_date(stock_ticker,datetime.datetime.now())
 
-        last_article_host = None
+        if agg_score is None:
 
-        self.logger.info('Reviewing {} collected articles.'.format(len(stock_articles)))
+            stock_articles = self.stock_news_collector.collect_articles_for_stock(stock_ticker)
 
-        for stock_article in stock_articles:
-            
-            article_host = re.findall(r'://(.+?)/',stock_article.url)[0]
+            self.logger.info('Reviewing {} collected articles.'.format(len(stock_articles)))
 
-            if last_article_host == article_host: time.sleep(5)
+            for stock_article in stock_articles:
 
-            last_article_host = article_host
+                self.db_utility.gather_stock_article(stock_article)
+                
+                if stock_article.stock_article_id is None:
 
-            if self.db_utility.is_article_saved(stock_article) == False:
+                    try:
 
-                try:
+                        newspaper_article = newspaper.Article(stock_article.url,config=self.article_config)
 
-                    newspaper_article = newspaper.Article(stock_article.url,config=self.article_config)
+                        newspaper_article.download()
 
-                    newspaper_article.download()
+                        newspaper_article.parse()
 
-                    newspaper_article.parse()
+                        stock_article.publish_date = newspaper_article.publish_date
 
-                    stock_article.publish_date = newspaper_article.publish_date
+                        stock_article.article_score = self.__score_text(newspaper_article.text)
 
-                    stock_article.article_score = self.__score_text(newspaper_article.text)
+                        # Don't want to overdo it.
+                        time.sleep(5)
 
-                    # self.db_utility.save_article(stock_article)
+                        self.db_utility.save_article(stock_article)
 
-                except Exception as e:
+                    except Exception as e:
 
-                    self.logger.error(e)
+                        self.logger.error(e)
 
-        agg_score = self.__build_agg_score(stock_ticker,stock_articles)
+            agg_score = self.__build_agg_score(stock_ticker,stock_articles)
 
-        self.db_utility.save_agg_score(agg_score)
+            self.db_utility.save_agg_score(agg_score)
 
         return agg_score
 
@@ -116,23 +119,3 @@ class StockRater(object):
     def shutdown(self):
 
         self.db_utility.shutdown()
-
-class AggScore(object):
-
-    def __init__(self, stock_ticker, stock_articles,agg_score_id = None):
-
-        self.stock_ticker = stock_ticker
-
-        self.agg_score_id = agg_score_id
-
-        self.stock_articles = stock_articles
-
-        self.avg = 0
-
-        self.max = 0
-
-        self.min = 0
-
-    def __str__(self):
-
-        return '{}\nNum Articles: {}\nAvg: {}\nMax: {}\nMin: {}'.format(self.stock_ticker,len(self.stock_articles),self.avg,self.max,self.min)

@@ -1,14 +1,13 @@
-import requests
-import re
+import feedparser
 import logging
 from service.stock_article import StockArticle
-from service.news_source import NewsSource, MarketWatch, SeekingAlpha, Benzinga
+from service.news_source import Nasdaq
 
 class StockNewsCollector(object):
 
     def __init__(self):
 
-        self.news_sources = [MarketWatch(),SeekingAlpha(),Benzinga()]
+        self.news_sources = [Nasdaq()]
 
         self.logger = logging.getLogger()
 
@@ -28,15 +27,9 @@ class StockNewsCollector(object):
 
                 news_source_url = news_source.construct_url(stock_ticker)
 
-                headers = {'User-Agent': 'My User Agent 1.0'}
+                feed = feedparser.parse(news_source_url)
 
-                response = requests.get(news_source_url,allow_redirects=True,headers=headers)
-
-                text = response.text
-
-                article_urls = news_source.gather_article_urls(text)
-
-                for article_url in article_urls: stock_articles.append(StockArticle(stock_ticker,article_url))
+                for entry in feed.entries: stock_articles.append(StockArticle(stock_ticker,entry.link))
 
             except Exception as e:
 
