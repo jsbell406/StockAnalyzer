@@ -2,9 +2,13 @@ import re
 
 class NewsSource(object):
 
-    def __init__(self,source_url):
+    def __init__(self,source_url,is_rss=True,article_regex=None):
 
         self.source_url = source_url
+
+        self.is_rss = is_rss
+
+        self.article_regex = article_regex
 
     def construct_url(self,stock_ticker):
 
@@ -18,6 +22,12 @@ class NewsSource(object):
 
 class Nasdaq(NewsSource):
 
-    def __init__(NewsSource):
+    def __init__(self):
 
         super().__init__('http://articlefeeds.nasdaq.com/nasdaq/symbols?symbol={}')
+
+class Zacks(NewsSource):
+
+    def __init__(self):
+
+        super().__init__('https://www.zacks.com/data_handler/stocks/stock_quote_news.php?provider=others&cat={}&limit=30&record=1',is_rss=False,article_regex=r'href=".*?\/\/(.+?)"')
