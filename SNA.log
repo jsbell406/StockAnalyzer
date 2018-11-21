@@ -1,6 +1,9 @@
-2018-11-19 07:26:18,752 root         INFO     Starting MainApp
-2018-11-19 07:26:18,754 root         INFO     StockNewsCollector Loaded
-2018-11-19 07:26:18,757 root         INFO     DatabaseUtility Loaded
-2018-11-19 07:26:18,780 root         INFO     StockRater loaded
-2018-11-19 07:26:23,951 root         INFO     Rating TSLA
-2018-11-19 07:27:18,023 root         INFO     Closing DB Connection
+2018-11-19 12:01:54,845 MainApp.py:<module>:11           INFO     Starting MainApp
+2018-11-19 12:01:54,846 stock_news_collector.py:__init__:16           INFO     StockNewsCollector Loaded
+2018-11-19 12:01:54,847 db_utility.py:__init__:18           INFO     DatabaseUtility Loaded
+2018-11-19 12:01:54,871 stock_rater.py:__init__:30           INFO     StockRater loaded
+2018-11-19 12:01:54,871 stock_rater.py:rate_stock:34           INFO     Rating NVDA
+2018-11-19 12:01:54,875 stock_news_collector.py:collect_articles_for_stock:20           INFO     Collecting articles for NVDA
+2018-11-19 12:01:55,526 stock_news_collector.py:__gather_articles_requests:62           ERROR    ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response',))
+2018-11-19 12:01:55,529 stock_rater.py:rate_stock:42           INFO     Reviewing 0 collected articles.
+2018-11-19 12:01:55,530 stock_rater.py:__build_agg_score:89           INFO     Building Agg Score for NVDAs 0 articles.

@@ -10,7 +10,7 @@ if __name__ == '__main__':
 
     logger.info('Starting MainApp')
 
-    stock_ticker = 'TSLA'
+    stock_ticker = 'NVDA'
 
     stock_rater = StockRater()
     
