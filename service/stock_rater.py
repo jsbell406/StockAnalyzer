@@ -106,11 +106,11 @@ class StockRater(object):
 
             min_score = article_score if article_score < min_score else min_score
 
-        agg_score.avg = total_score / len(stock_articles)
+        agg_score.avg_score = total_score / len(stock_articles)
 
-        agg_score.max = max_score
+        agg_score.max_score = max_score
 
-        agg_score.min = min_score
+        agg_score.min_score = min_score
 
         self.logger.info(agg_score)
 

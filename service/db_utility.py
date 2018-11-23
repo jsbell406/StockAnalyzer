@@ -33,9 +33,9 @@ class DatabaseUtility(object):
 
         self.logger.debug('Saving Agg Score')
 
-        statement = '''INSERT INTO agg_score (stock_ticker,avg,max,min) VALUES (?,?,?,?)'''
+        statement = '''INSERT INTO agg_score (stock_ticker,avg_score,max_score,min_score) VALUES (?,?,?,?)'''
 
-        params = (agg_score.stock_ticker,agg_score.avg,agg_score.max,agg_score.min)
+        params = (agg_score.stock_ticker,agg_score.avg_score,agg_score.max_score,agg_score.min_score)
 
         agg_score_id = self.db_connection.execute_return_id(statement,params)
 
@@ -67,11 +67,11 @@ class DatabaseUtility(object):
 
             agg_score = AggScore(stock_ticker,None,raw_data[0])
 
-            agg_score.avg = raw_data[2]
+            agg_score.avg_score = raw_data[2]
 
-            agg_score.max = raw_data[3]
+            agg_score.max_score = raw_data[3]
 
-            agg_score.min = raw_data[4]
+            agg_score.min_score = raw_data[4]
 
         return agg_score
 
