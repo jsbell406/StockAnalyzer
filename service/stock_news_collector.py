@@ -1,68 +1,55 @@
-import feedparser
-import requests
-import re
 import logging
-from service.stock_article import StockArticle
-from service.news_source import Nasdaq, Zacks
+from multiprocessing.pool import ThreadPool
+import time
+from service.news_source import Nasdaq, Zacks, NYT, TheGuardian, IEX
 
 class StockNewsCollector(object):
 
     def __init__(self):
 
-        self.news_sources = [Nasdaq(),Zacks()]
+        self.news_sources = [Nasdaq(),Zacks(), NYT(), TheGuardian(), IEX()]
 
         self.logger = logging.getLogger()
 
         self.logger.info('StockNewsCollector Loaded')
 
-    def collect_articles_for_stock(self,stock_ticker):
+    def collect_articles_for_stock(self,stock_ticker,stock_name):
 
         self.logger.info('Collecting articles for ' + stock_ticker)
 
         stock_articles = []
 
-        for news_source in self.news_sources:
+        for stock_article in self.__collect_articles_with_param(stock_ticker): stock_articles.append(stock_article)
 
-            self.logger.debug('Collecting articles for {} via {}'.format(stock_ticker,news_source))
+        if stock_name is not None:
 
-            news_source_url = news_source.construct_url(stock_ticker)
+            time.sleep(5) # Let the resources rest
 
-            if news_source.is_rss: stock_articles = self.__gather_articles_rss(stock_ticker,news_source_url)
-
-            else: stock_articles = self.__gather_articles_requests(stock_ticker,news_source_url,news_source.article_regex)
+            for stock_article in self.__collect_articles_with_param(stock_name): stock_articles.append(stock_name)
 
         return stock_articles
 
-    def __gather_articles_rss(self,stock_ticker,news_source_url):
+    def __collect_articles_with_param(self,param):
+
+        thread_pool = ThreadPool(processes=len(self.news_sources))
+
+        workers = []
+
+        for news_source in self.news_sources: workers.append(thread_pool.apply_async(self.__collect_articles_from_news_source,(news_source,param)))
 
         stock_articles = []
 
-        try:
+        for worker in workers:
 
-            feed = feedparser.parse(news_source_url)
-
-            for entry in feed.entries: stock_articles.append(StockArticle(stock_ticker,entry.link))
-            
-        except Exception as e: self.logger.error(e)
+            for stock_article in worker.get(): stock_articles.append(stock_article)
 
         return stock_articles
 
-    def __gather_articles_requests(self,stock_ticker,news_source_url,article_regex):
+    def __collect_articles_from_news_source(self,news_source,stock_ticker):
 
-        stock_articles = []
+        return news_source.collect_articles(stock_ticker)
 
-        try:
-
-            response = requests.get(news_source_url)
-
-            response_text = response.text
-
-            for stock_article_url in re.findall(article_regex,response_text): stock_articles.append(StockArticle(stock_ticker,stock_article_url))
-
-        except Exception as e: self.logger.error(e)
-
-        return stock_articles
-
+    
 
 
 

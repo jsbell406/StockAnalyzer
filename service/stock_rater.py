@@ -37,7 +37,9 @@ class StockRater(object):
 
         if agg_score is None:
 
-            stock_articles = self.stock_news_collector.collect_articles_for_stock(stock_ticker)
+            stock_name = self.db_utility.gather_stock_name(stock_ticker)
+
+            stock_articles = self.stock_news_collector.collect_articles_for_stock(stock_ticker,stock_name)
 
             self.logger.info('Reviewing {} collected articles.'.format(len(stock_articles)))
 

@@ -89,9 +89,25 @@ class DatabaseUtility(object):
 
             stock_article.stock_article_id = raw_data[0]
 
+            stock_article.stock_ticker = raw_data[1]
+
+            stock_article.url = raw_data[2]
+
             stock_article.publish_date = raw_data[3]
 
             stock_article.article_score = raw_data[4]
+
+    def gather_stock_name(self,stock_ticker):
+
+        statement = '''SELECT stock_name FROM stock_name WHERE stock_ticker = ?'''
+
+        params = (stock_ticker,)
+
+        results = self.db_connection.execute_query(statement,params)
+
+        raw_data = results.fetchone()
+
+        return raw_data[0] if raw_data is not None else None
 
     def shutdown(self):
 

@@ -11,3 +11,5 @@ class StockArticle(object):
         self.publish_date = None
 
         self.article_score = -1
+
+        self.save_date = None
