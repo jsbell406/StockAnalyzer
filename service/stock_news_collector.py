@@ -2,6 +2,7 @@ import logging
 from multiprocessing.pool import ThreadPool
 import time
 from service.news_source import Nasdaq, Zacks, NYT, TheGuardian, IEX
+from service.models import StockTickerNameXref
 
 class StockNewsCollector(object):
 
@@ -13,19 +14,21 @@ class StockNewsCollector(object):
 
         self.logger.info('StockNewsCollector Loaded')
 
-    def collect_articles_for_stock(self,stock_ticker,stock_name):
+    def collect_articles_for_stock(self,ticker):
 
-        self.logger.info('Collecting articles for ' + stock_ticker)
+        self.logger.info('Collecting articles for ' + ticker)
 
         stock_articles = []
 
-        for stock_article in self.__collect_articles_with_param(stock_ticker): stock_articles.append(stock_article)
+        stock_ticker_name_xref = StockTickerNameXref.get_or_none(stock_ticker=ticker)
 
-        if stock_name is not None:
+        for stock_article in self.__collect_articles_with_param(ticker): stock_articles.append(stock_article)
+
+        if stock_ticker_name_xref is not None:
 
             time.sleep(5) # Let the resources rest
 
-            for stock_article in self.__collect_articles_with_param(stock_name): stock_articles.append(stock_name)
+            for stock_article in self.__collect_articles_with_param(stock_ticker_name_xref.stock_name): stock_articles.append(stock_article)
 
         return stock_articles
 
@@ -45,9 +48,9 @@ class StockNewsCollector(object):
 
         return stock_articles
 
-    def __collect_articles_from_news_source(self,news_source,stock_ticker):
+    def __collect_articles_from_news_source(self,news_source,param):
 
-        return news_source.collect_articles(stock_ticker)
+        return news_source.collect_articles(param)
 
     
 

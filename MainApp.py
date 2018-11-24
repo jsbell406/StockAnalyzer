@@ -1,6 +1,8 @@
 import logging
+import sys
 from logging.config import fileConfig
-from service.stock_rater import StockRater, AggScore
+from service.stock_rater import StockRater
+from service.models import AggScore
 
 if __name__ == '__main__':
 
@@ -10,10 +12,15 @@ if __name__ == '__main__':
 
     logger.info('Starting MainApp')
 
+    # stock_ticker = sys.argv[1]
+    
+    # Testing
     stock_ticker = 'NVDA'
 
     stock_rater = StockRater()
     
     agg_score = stock_rater.rate_stock(stock_ticker)
+
+    print(agg_score)
 
     stock_rater.shutdown()

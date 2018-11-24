@@ -3,7 +3,7 @@ import feedparser
 import logging
 import requests
 from datetime import date, timedelta
-from service.stock_article import StockArticle
+from service.models import StockArticle
 
 class NewsSource(object):
 
@@ -37,13 +37,15 @@ class NewsSourceRss(NewsSource):
 
     def collect_articles(self,stock_ticker):
 
+        self.logger.info('Collecting articles via RSS')
+
         stock_articles = []
 
         try:
 
             feed = feedparser.parse(self.construct_url(stock_ticker))
 
-            for entry in feed.entries: stock_articles.append(StockArticle(stock_ticker,entry.link))
+            for entry in feed.entries: stock_articles.append(StockArticle(stock_ticker=stock_ticker,url=entry.link))
 
         except Exception as e: self.logger.error(e)
 
@@ -61,6 +63,8 @@ class NewsSourceRegex(NewsSource):
 
     def collect_articles(self,stock_ticker):
 
+        self.logger.info('Collecting Articles via Requests/Regex')
+
         stock_articles = []
 
         try:
@@ -69,7 +73,7 @@ class NewsSourceRegex(NewsSource):
 
             response_text = response.text
 
-            for stock_article_url in re.findall(self.collection_regex,response_text): stock_articles.append(StockArticle(stock_ticker,stock_article_url))
+            for stock_article_url in re.findall(self.collection_regex,response_text): stock_articles.append(StockArticle(stock_ticker=stock_ticker,url=stock_article_url))
 
         except Exception as e: self.logger.error(e)
 
@@ -86,6 +90,8 @@ class NewsSourceJSON(NewsSource):
         self.api_key = api_key
 
     def collect_articles(self,stock_ticker):
+
+        self.logger.info('Collecting Articles via JSON')
 
         stock_articles = []
 
@@ -170,7 +176,7 @@ class NYT(NewsSourceJSON):
                 
                 publish_date = date.fromtimestamp(article['pub_date'])
 
-                stock_article = StockArticle(stock_ticker,web_url)
+                stock_article = StockArticle(stock_ticker=stock_ticker,url=web_url)
 
                 stock_article.publish_date = publish_date
 
@@ -215,7 +221,7 @@ class TheGuardian(NewsSourceJSON):
                 
                 publish_date = date.fromtimestamp(article['webPublicationDate'])
 
-                stock_article = StockArticle(stock_ticker,web_url)
+                stock_article = StockArticle(stock_ticker=stock_ticker,url=web_url)
 
                 stock_article.publish_date = publish_date
 
@@ -244,7 +250,7 @@ class IEX(NewsSourceJSON):
                 
                 publish_date = date.fromtimestamp(article['datetime'])
 
-                stock_article = StockArticle(stock_ticker,web_url)
+                stock_article = StockArticle(stock_ticker=stock_ticker,url=web_url)
 
                 stock_article.publish_date = publish_date
 
