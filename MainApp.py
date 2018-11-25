@@ -22,5 +22,3 @@ if __name__ == '__main__':
     agg_score = stock_rater.rate_stock(stock_ticker)
 
     print(agg_score)
-
-    stock_rater.shutdown()

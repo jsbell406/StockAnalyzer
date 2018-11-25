@@ -19,6 +19,10 @@ class AggScore(BaseModel):
     class Meta:
         table_name = 'agg_score'
 
+    def __str__(self):
+
+        return '{}\nAVG: {}\nMAX: {}\nMIN: {}'.format(self.stock_ticker,self.avg_score,self.max_score,self.min_score)
+
 class AggScoreStockArticleXref(BaseModel):
     agg_score = IntegerField(null=True)
     score_date = TextField(null=True)

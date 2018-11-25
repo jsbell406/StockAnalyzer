@@ -40,7 +40,7 @@ class StockRater(object):
 
             for stock_article in stock_articles:
 
-                existing_stock_article = StockArticle.get(url=stock_article.url)
+                existing_stock_article = StockArticle.get_or_none(url=stock_article.url)
                 
                 if existing_stock_article is None:
 
@@ -71,7 +71,7 @@ class StockRater(object):
 
             agg_score.save()
 
-            for stock_article in stock_articles: StockArticle.create(agg_score=agg_score.id,score_date=datetime.date.today().strftime('%F'),stock_article=stock_article.id)
+            for stock_article in stock_articles: AggScoreStockArticleXref.create(agg_score=agg_score.id,score_date=datetime.date.today().strftime('%F'),stock_article=stock_article.id)
 
         return agg_score
 
@@ -93,19 +93,21 @@ class StockRater(object):
 
         total_score = 0
 
-        max_score = 0
+        max_score = -1
 
-        min_score = 1000
+        min_score = 1
 
         for stock_article in stock_articles: 
 
             article_score = stock_article.article_score
 
-            total_score += article_score
+            if article_score is not None:
 
-            max_score = article_score if article_score > max_score else max_score
+                total_score += article_score
 
-            min_score = article_score if article_score < min_score else min_score
+                max_score = article_score if article_score > max_score else max_score
+
+                min_score = article_score if article_score < min_score else min_score
 
         agg_score.avg_score = total_score / len(stock_articles)
 

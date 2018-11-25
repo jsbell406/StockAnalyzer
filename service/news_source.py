@@ -99,7 +99,7 @@ class NewsSourceJSON(NewsSource):
 
             headers = self.construct_headers(stock_ticker)
 
-            response = requests.get(self.construct_url(stock_ticker)) if headers is None else requests.get(self.construct_url(stock_ticker), headers)
+            response = requests.get(self.construct_url(stock_ticker)) if headers is None else requests.get(self.construct_url(stock_ticker), headers=headers)
 
             response_json = response.json()
 
@@ -146,7 +146,7 @@ class NYT(NewsSourceJSON):
 
     def __init__(self):
 
-        super().__init__('https://api.nytimes.com/svc/search/v2/articlesearch.json?','f8ed562261ea48a1871e9988f957a9c8')
+        super().__init__('https://api.nytimes.com/svc/search/v2/articlesearch.json','f8ed562261ea48a1871e9988f957a9c8')
 
     def construct_headers(self,stock_ticker):
 
@@ -174,7 +174,7 @@ class NYT(NewsSourceJSON):
 
                 web_url = article['web_url']
                 
-                publish_date = date.fromtimestamp(article['pub_date'])
+                publish_date = article['pub_date']
 
                 stock_article = StockArticle(stock_ticker=stock_ticker,url=web_url)
 
@@ -191,7 +191,7 @@ class TheGuardian(NewsSourceJSON):
 
     def __init__(self):
 
-        super().__init__('https://content.guardianapis.com/search?section=business&from-date={}&order-by=newest&q={}&api-key={}','233d61f8-ed2a-400d-ac40-7e5424e07cf6')
+        super().__init__('https://content.guardianapis.com/search','233d61f8-ed2a-400d-ac40-7e5424e07cf6')
 
     def construct_headers(self,stock_ticker):
 
@@ -219,7 +219,7 @@ class TheGuardian(NewsSourceJSON):
 
                 web_url = article['webUrl']
                 
-                publish_date = date.fromtimestamp(article['webPublicationDate'])
+                publish_date = article['webPublicationDate']
 
                 stock_article = StockArticle(stock_ticker=stock_ticker,url=web_url)
 
@@ -248,7 +248,7 @@ class IEX(NewsSourceJSON):
 
                 web_url = article['url']
                 
-                publish_date = date.fromtimestamp(article['datetime'])
+                publish_date = article['datetime']
 
                 stock_article = StockArticle(stock_ticker=stock_ticker,url=web_url)
 
