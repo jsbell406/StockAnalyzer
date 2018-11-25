@@ -28,7 +28,11 @@ class StockNewsCollector(object):
 
             time.sleep(5) # Let the resources rest
 
-            for stock_article in self.__collect_articles_with_param(stock_ticker_name_xref.stock_name): stock_articles.append(stock_article)
+            for stock_article in self.__collect_articles_with_param(stock_ticker_name_xref.stock_name): 
+
+                stock_article.stock_ticker = ticker
+
+                stock_articles.append(stock_article)
 
         return stock_articles
 

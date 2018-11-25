@@ -1,11 +1,9 @@
 import re
-import newspaper
 import time
 import logging
 import datetime
-from nltk import tokenize
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from service.stock_news_collector import StockNewsCollector
+from service.stock_news_rater import StockNewsRater
 from service.models import AggScore, StockTickerNameXref, StockArticle, AggScoreStockArticleXref
 
 class StockRater(object):
@@ -14,13 +12,7 @@ class StockRater(object):
 
         self.stock_news_collector = StockNewsCollector()
 
-        self.analyzer = SentimentIntensityAnalyzer()
-
-        self.article_config = newspaper.configuration.Configuration()
-
-        self.article_config.browser_user_agent = 'My User Agent 1.0'
-
-        self.article_config.headers = {'User-Agent': 'My User Agent 1.0','From': 'youremail@domain.com'}
+        self.stock_news_rater = StockNewsRater()
 
         self.logger = logging.getLogger()
 
@@ -36,36 +28,9 @@ class StockRater(object):
 
             stock_articles = self.stock_news_collector.collect_articles_for_stock(stock_ticker)
 
-            self.logger.info('Reviewing {} collected articles.'.format(len(stock_articles)))
+            self.stock_news_rater.rate_stock_news(stock_articles)
 
-            for stock_article in stock_articles:
-
-                existing_stock_article = StockArticle.get_or_none(url=stock_article.url)
-                
-                if existing_stock_article is None:
-
-                    try:
-
-                        newspaper_article = newspaper.Article(stock_article.url,config=self.article_config)
-
-                        newspaper_article.download()
-
-                        newspaper_article.parse()
-
-                        stock_article.publish_date = newspaper_article.publish_date
-
-                        stock_article.article_score = self.__score_text(newspaper_article.text)
-
-                        # Don't want to overdo it.
-                        time.sleep(5)
-
-                        stock_article.save()
-
-                    except Exception as e:
-
-                        self.logger.error(e)
-
-                else: stock_article = existing_stock_article
+            for stock_article in stock_articles: stock_article.save()
 
             agg_score = self.__build_agg_score(stock_ticker,stock_articles)
 
@@ -73,17 +38,8 @@ class StockRater(object):
 
             for stock_article in stock_articles: AggScoreStockArticleXref.create(agg_score=agg_score.id,score_date=datetime.date.today().strftime('%F'),stock_article=stock_article.id)
 
+
         return agg_score
-
-    def __score_text(self,text):
-
-        sentences = tokenize.sent_tokenize(text)
-
-        total_compound_score = 0
-
-        for sentence in sentences: total_compound_score += self.analyzer.polarity_scores(sentence)['compound']
-
-        return total_compound_score / len(sentences)
 
     def __build_agg_score(self,stock_ticker,stock_articles):
 

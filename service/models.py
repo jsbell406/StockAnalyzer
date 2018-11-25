@@ -21,7 +21,7 @@ class AggScore(BaseModel):
 
     def __str__(self):
 
-        return '{}\nAVG: {}\nMAX: {}\nMIN: {}'.format(self.stock_ticker,self.avg_score,self.max_score,self.min_score)
+        return '\n{}\nAVG: {}\nMAX: {}\nMIN: {}\n'.format(self.stock_ticker,self.avg_score,self.max_score,self.min_score)
 
 class AggScoreStockArticleXref(BaseModel):
     agg_score = IntegerField(null=True)

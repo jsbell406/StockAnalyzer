@@ -1,9 +1,33 @@
-2018-11-25 05:49:56,015 MainApp.py:<module>:13           INFO     Starting MainApp
-2018-11-25 05:49:56,016 news_source.py:__init__:16           INFO     Loaded NewsSource: articlefeeds.nasdaq.com
-2018-11-25 05:49:56,016 news_source.py:__init__:16           INFO     Loaded NewsSource: www.zacks.com
-2018-11-25 05:49:56,016 news_source.py:__init__:16           INFO     Loaded NewsSource: api.nytimes.com
-2018-11-25 05:49:56,016 news_source.py:__init__:16           INFO     Loaded NewsSource: content.guardianapis.com
-2018-11-25 05:49:56,016 news_source.py:__init__:16           INFO     Loaded NewsSource: api.iextrading.com
-2018-11-25 05:49:56,016 stock_news_collector.py:__init__:15           INFO     StockNewsCollector Loaded
-2018-11-25 05:49:56,030 stock_rater.py:__init__:27           INFO     StockRater loaded
-2018-11-25 05:49:56,030 stock_rater.py:rate_stock:31           INFO     Rating NVDA
+2018-11-25 08:37:11,464 MainApp.py:<module>:30           INFO     Starting MainApp
+2018-11-25 08:37:11,465 news_source.py:__init__:16           INFO     Loaded NewsSource: articlefeeds.nasdaq.com
+2018-11-25 08:37:11,465 news_source.py:__init__:16           INFO     Loaded NewsSource: www.zacks.com
+2018-11-25 08:37:11,465 news_source.py:__init__:16           INFO     Loaded NewsSource: api.nytimes.com
+2018-11-25 08:37:11,466 news_source.py:__init__:16           INFO     Loaded NewsSource: content.guardianapis.com
+2018-11-25 08:37:11,466 news_source.py:__init__:16           INFO     Loaded NewsSource: api.iextrading.com
+2018-11-25 08:37:11,466 stock_news_collector.py:__init__:15           INFO     StockNewsCollector Loaded
+2018-11-25 08:37:11,480 stock_news_rater.py:__init__:24           INFO     StockNewsRater Loaded
+2018-11-25 08:37:11,480 stock_rater.py:__init__:19           INFO     StockRater loaded
+2018-11-25 08:37:11,480 stock_rater.py:rate_stock:23           INFO     Rating TSLA
+2018-11-25 08:37:11,483 stock_news_collector.py:collect_articles_for_stock:19           INFO     Collecting articles for TSLA
+2018-11-25 08:37:11,486 news_source.py:collect_articles:40           INFO     Collecting articles via RSS
+2018-11-25 08:37:11,486 news_source.py:collect_articles:66           INFO     Collecting Articles via Requests/Regex
+2018-11-25 08:37:11,486 news_source.py:collect_articles:94           INFO     Collecting Articles via JSON
+2018-11-25 08:37:11,486 news_source.py:collect_articles:94           INFO     Collecting Articles via JSON
+2018-11-25 08:37:11,488 news_source.py:collect_articles:94           INFO     Collecting Articles via JSON
+2018-11-25 08:37:11,862 news_source.py:collect_articles:78           ERROR    ('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))
+2018-11-25 08:37:17,497 news_source.py:collect_articles:40           INFO     Collecting articles via RSS
+2018-11-25 08:37:17,497 news_source.py:collect_articles:66           INFO     Collecting Articles via Requests/Regex
+2018-11-25 08:37:17,498 news_source.py:collect_articles:94           INFO     Collecting Articles via JSON
+2018-11-25 08:37:17,498 news_source.py:collect_articles:94           INFO     Collecting Articles via JSON
+2018-11-25 08:37:17,503 news_source.py:collect_articles:94           INFO     Collecting Articles via JSON
+2018-11-25 08:37:17,797 news_source.py:collect_articles:78           ERROR    ('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))
+2018-11-25 08:37:17,800 news_source.py:collect_articles:108          ERROR    Expecting value: line 1 column 1 (char 0)
+2018-11-25 08:37:18,299 stock_news_rater.py:rate_stock_news:28           INFO     Reviewing 72 articles.
+2018-11-25 08:40:24,636 stock_rater.py:__build_agg_score:45           INFO     Building Agg Score for TSLAs 72 articles.
+2018-11-25 08:40:25,541 MainApp.py:<module>:41           INFO     
+TSLA
+AVG: 0.10990590358365432
+MAX: 0.891
+MIN: -0.2513125
+
+2018-11-25 08:40:25,542 MainApp.py:<module>:43           INFO     It took 3.2 minutes to score TSLA.
