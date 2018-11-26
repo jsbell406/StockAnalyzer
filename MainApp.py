@@ -2,6 +2,7 @@ import logging
 import sys
 import time
 from logging.config import fileConfig
+from service.histogram_generator import HistogramGenerator
 from service.stock_rater import StockRater
 from service.models import AggScore
 
@@ -32,7 +33,7 @@ if __name__ == '__main__':
     # stock_ticker = sys.argv[1]
     
     # Testing
-    stock_ticker = 'TSLA'
+    stock_ticker = 'AAPL'
 
     stock_rater = StockRater()
     
@@ -41,3 +42,5 @@ if __name__ == '__main__':
     logger.info(agg_score)
 
     logger.info(create_time_spent_message(start_time))
+
+    HistogramGenerator().generate_histogram(agg_score)
