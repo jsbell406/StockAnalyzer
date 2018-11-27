@@ -3,10 +3,10 @@ import sys
 import time
 from logging.config import fileConfig
 from service.histogram_generator import HistogramGenerator
-from service.stock_rater import StockRater
-from service.models import AggScore
+from service.stock_news_analyzer import StockNewsAnalyzer
+from service.models import Stock
 
-def create_time_spent_message(start_time):
+def create_time_spent_message(start_time,stock_ticker):
 
     end_time = time.time()
 
@@ -24,23 +24,11 @@ if __name__ == '__main__':
 
     start_time = time.time()
 
-    fileConfig('logging_config.ini')
-
-    logger = logging.getLogger()
-
-    logger.info('Starting MainApp')
-
     # stock_ticker = sys.argv[1]
+
+    stock_ticker = 'NVDA'
     
     # Testing
-    stock_ticker = 'AAPL'
+    StockNewsAnalyzer().analyze_stock(stock_ticker)
 
-    stock_rater = StockRater()
-    
-    agg_score = stock_rater.rate_stock(stock_ticker)
-
-    logger.info(agg_score)
-
-    logger.info(create_time_spent_message(start_time))
-
-    HistogramGenerator().generate_histogram(agg_score)
+    print(create_time_spent_message(start_time,stock_ticker))

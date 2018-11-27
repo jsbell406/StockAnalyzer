@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import colors
 from matplotlib.ticker import PercentFormatter
-from service.models import AggScoreStockArticleXref, StockArticle
 
 class HistogramGenerator(object):
 
@@ -13,25 +12,18 @@ class HistogramGenerator(object):
 
         self.logger.info('HistogramGenerator Loaded')
 
-    def generate_histogram(self,agg_score):
+    def generate_histogram(self,title_dataset_map):
 
-        xrefs = AggScoreStockArticleXref.select().where(AggScoreStockArticleXref.agg_score == agg_score.id)
+        num_datasets = len(title_dataset_map)
 
-        scores = []
-        
-        for xref in xrefs: 
+        fig, axs = plt.subplots(1, num_datasets, sharey=True, tight_layout=True)
 
-            stock_article = StockArticle.get(id=xref.stock_article)
+        for index, title in enumerate(title_dataset_map.keys()):
 
-            if stock_article.article_score is not None: scores.append(stock_article.article_score)
+            dataset = title_dataset_map[title]
 
-        N_points = len(scores)
+            axs[index].hist(dataset, bins=10, )
 
-        n_bins = 10
-
-        fig, axs = plt.subplots(1, 1, sharey=True, tight_layout=True)
-
-        # # We can set the number of bins with the `bins` kwarg
-        axs.hist(scores, bins=n_bins)
+            axs[index].set_xlim([-1,1])
 
         plt.show()    

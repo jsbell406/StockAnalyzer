@@ -9,27 +9,60 @@ class BaseModel(Model):
     class Meta:
         database = database
 
-class AggScore(BaseModel):
-    avg_score = FloatField(null=True)
-    max_score = FloatField(null=True)
-    min_score = FloatField(null=True)
-    score_date = TextField(null=True)
-    stock_ticker = TextField()
+class Article(BaseModel):
+    publish_date = TextField(null=True)
+    save_date = TextField(null=True)
+    url = TextField()
 
     class Meta:
-        table_name = 'agg_score'
+        table_name = 'Article'
 
-    def __str__(self):
-
-        return '\n{}\nAVG: {}\nMAX: {}\nMIN: {}\n'.format(self.stock_ticker,self.avg_score,self.max_score,self.min_score)
-
-class AggScoreStockArticleXref(BaseModel):
-    agg_score = IntegerField(null=True)
-    score_date = TextField(null=True)
-    stock_article = IntegerField(null=True)
+class Content(BaseModel):
+    content_type = IntegerField()
+    text = TextField()
 
     class Meta:
-        table_name = 'agg_score_stock_article_xref'
+        table_name = 'Content'
+
+class ArticleContent(BaseModel):
+    article = ForeignKeyField(column_name='article', field='id', model=Article)
+    content = ForeignKeyField(column_name='content', field='id', model=Content)
+
+    class Meta:
+        table_name = 'Article_Content'
+
+class Score(BaseModel):
+    value = FloatField(null=True)
+
+    class Meta:
+        table_name = 'Score'
+
+class ContentScore(BaseModel):
+    content = ForeignKeyField(column_name='content_id', field='id', model=Content)
+    score = ForeignKeyField(column_name='score_id', field='id', model=Score)
+
+    class Meta:
+        table_name = 'Content_Score'
+
+class ContentType(BaseModel):
+    type = TextField()
+
+    class Meta:
+        table_name = 'Content_Type'
+
+class Stock(BaseModel):
+    name = TextField(null=True)
+    ticker = TextField(primary_key=True)
+
+    class Meta:
+        table_name = 'Stock'
+
+class StockArticle(BaseModel):
+    article = ForeignKeyField(column_name='article_id', field='id', model=Article)
+    stock_ticker = ForeignKeyField(column_name='stock_ticker', field='ticker', model=Stock)
+
+    class Meta:
+        table_name = 'Stock_Article'
 
 class SqliteSequence(BaseModel):
     name = UnknownField(null=True)  # 
@@ -37,23 +70,5 @@ class SqliteSequence(BaseModel):
 
     class Meta:
         table_name = 'sqlite_sequence'
-        primary_key = False
-
-class StockArticle(BaseModel):
-    article_score = FloatField(null=True)
-    publish_date = TextField(null=True)
-    save_date = TextField(null=True)
-    stock_ticker = TextField()
-    url = TextField()
-
-    class Meta:
-        table_name = 'stock_article'
-
-class StockTickerNameXref(BaseModel):
-    stock_name = TextField(null=True)
-    stock_ticker = TextField(null=True)
-
-    class Meta:
-        table_name = 'stock_ticker_name_xref'
         primary_key = False
 

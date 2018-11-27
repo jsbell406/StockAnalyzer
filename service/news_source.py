@@ -3,7 +3,8 @@ import feedparser
 import logging
 import requests
 from datetime import date, timedelta
-from service.models import StockArticle
+import time
+from service.models import Article
 
 class NewsSource(object):
 
@@ -15,11 +16,11 @@ class NewsSource(object):
 
         self.logger.info('Loaded NewsSource: ' + self.__str__())
 
-    def construct_url(self,stock_ticker):
+    def construct_url(self,stock):
 
-        return self.source_url.format(stock_ticker)
+        return self.source_url.format(stock.ticker)
 
-    def collect_articles(self,stock_ticker):
+    def collect_articles(self,stock):
 
         pass
 
@@ -35,21 +36,31 @@ class NewsSourceRss(NewsSource):
 
         super().__init__(source_url)
 
-    def collect_articles(self,stock_ticker):
+    def collect_articles(self,stock):
 
         self.logger.info('Collecting articles via RSS')
 
-        stock_articles = []
+        articles = []
 
         try:
 
-            feed = feedparser.parse(self.construct_url(stock_ticker))
+            feed = feedparser.parse(self.construct_url(stock))
 
-            for entry in feed.entries: stock_articles.append(StockArticle(stock_ticker=stock_ticker,url=entry.link))
+            for entry in feed.entries: 
+
+                article_url = entry.link
+
+                publish_date_tuple = entry.published_parsed
+
+                pub_date = '-'.join([str(x) for x in publish_date_tuple[0:3]])
+
+                saved_article = Article.get_or_none(url=article_url)
+
+                articles.append(saved_article if saved_article is not None else Article(url=article_url,publish_date=pub_date))
 
         except Exception as e: self.logger.error(e)
 
-        return stock_articles
+        return articles
 
 # ==================================================
 
@@ -61,23 +72,23 @@ class NewsSourceRegex(NewsSource):
 
         self.collection_regex = collection_regex
 
-    def collect_articles(self,stock_ticker):
+    def collect_articles(self,stock):
 
         self.logger.info('Collecting Articles via Requests/Regex')
 
-        stock_articles = []
+        articles = []
 
         try:
 
-            response = requests.get(self.construct_url(stock_ticker))
+            response = requests.get(self.construct_url(stock))
 
             response_text = response.text
 
-            for stock_article_url in re.findall(self.collection_regex,response_text): stock_articles.append(StockArticle(stock_ticker=stock_ticker,url=stock_article_url))
+            for article_url in re.findall(self.collection_regex,response_text): articles.append(Article(url=article_url))
 
         except Exception as e: self.logger.error(e)
 
-        return stock_articles
+        return articles
 
 # ==================================================
 
@@ -89,31 +100,37 @@ class NewsSourceJSON(NewsSource):
 
         self.api_key = api_key
 
-    def collect_articles(self,stock_ticker):
+    def collect_articles(self,stock):
 
         self.logger.info('Collecting Articles via JSON')
 
-        stock_articles = []
+        articles = []
 
         try:
+            
+            for i in range(2):
 
-            headers = self.construct_headers(stock_ticker)
+                stock_param = stock.ticker if i == 0 else stock.name
 
-            response = requests.get(self.construct_url(stock_ticker)) if headers is None else requests.get(self.construct_url(stock_ticker), headers=headers)
+                headers = self.construct_headers(stock_param)
 
-            response_json = response.json()
+                response = requests.get(self.construct_url(stock), headers=headers)
 
-            stock_articles = self.convert_json_to_articles(stock_ticker,response_json)
+                response_json = response.json()
+
+                articles += self.convert_json_to_articles(response_json)
+
+                time.sleep(5)
 
         except Exception as e: self.logger.error(e)
 
-        return stock_articles
+        return articles
 
-    def construct_headers(self,stock_ticker):
+    def construct_headers(self,stock_param):
 
         pass
 
-    def convert_json_to_articles(self,stock_ticker,response_json):
+    def convert_json_to_articles(self,response_json):
 
         pass
 
@@ -148,13 +165,13 @@ class NYT(NewsSourceJSON):
 
         super().__init__('https://api.nytimes.com/svc/search/v2/articlesearch.json','f8ed562261ea48a1871e9988f957a9c8')
 
-    def construct_headers(self,stock_ticker):
+    def construct_headers(self,stock_param):
 
           headers = {}
 
           headers['api-key'] = self.api_key
 
-          headers['q'] = stock_ticker
+          headers['q'] = stock_param
 
           headers['begin_date'] = (date.today() - timedelta(days=10)).strftime('%Y%m%d')
 
@@ -164,27 +181,23 @@ class NYT(NewsSourceJSON):
 
           return headers
 
-    def convert_json_to_articles(self,stock_ticker,response_json):
+    def convert_json_to_articles(self,response_json):
 
-        stock_articles = []
+        articles = []
 
         try:
 
-            for article in response_json['response']['docs']: 
+            for article_data in response_json['response']['docs']: 
 
-                web_url = article['web_url']
+                article_url = article_data['web_url']
                 
-                publish_date = article['pub_date']
+                pub_date = article_data['pub_date']
 
-                stock_article = StockArticle(stock_ticker=stock_ticker,url=web_url)
-
-                stock_article.publish_date = publish_date
-
-                stock_articles.append(stock_article)
+                articles.append(Article(url=article_url,publish_date=pub_date))
 
         except Exception as e: self.logger.error(e)
 
-        return stock_articles
+        return articles
 
 
 class TheGuardian(NewsSourceJSON):
@@ -193,7 +206,7 @@ class TheGuardian(NewsSourceJSON):
 
         super().__init__('https://content.guardianapis.com/search','233d61f8-ed2a-400d-ac40-7e5424e07cf6')
 
-    def construct_headers(self,stock_ticker):
+    def construct_headers(self,stock_param):
 
           headers = {}
 
@@ -203,33 +216,29 @@ class TheGuardian(NewsSourceJSON):
 
           headers['order-by'] = 'newest'
 
-          headers['q'] = stock_ticker
+          headers['q'] = stock_param
 
           headers['api-key'] = self.api_key
 
           return headers
 
-    def convert_json_to_articles(self,stock_ticker,response_json):
+    def convert_json_to_articles(self,response_json):
 
-        stock_articles = []
+        articles = []
 
         try:
 
-            for article in response_json['response']['results']: 
+            for article_data in response_json['response']['results']: 
 
-                web_url = article['webUrl']
+                article_url = article_data['webUrl']
                 
-                publish_date = article['webPublicationDate']
+                pub_date = article_data['webPublicationDate']
 
-                stock_article = StockArticle(stock_ticker=stock_ticker,url=web_url)
-
-                stock_article.publish_date = publish_date
-
-                stock_articles.append(stock_article)
+                articles.append(Article(url=article_url,publish_date=pub_date))
 
         except Exception as e: self.logger.error(e)
 
-        return stock_articles
+        return articles
 
 
 class IEX(NewsSourceJSON):
@@ -238,26 +247,26 @@ class IEX(NewsSourceJSON):
 
         super().__init__('https://api.iextrading.com/1.0/stock/{}/news')
 
-    def convert_json_to_articles(self,stock_ticker,response_json):
+    def construct_headers(self,stock_param):
 
-        stock_articles = []
+        return None
+
+    def convert_json_to_articles(self,response_json):
+
+        articles = []
 
         try:
 
-            for article in response_json: 
+            for article_data in response_json: 
 
-                web_url = article['url']
+                article_url = article_data['url']
                 
-                publish_date = article['datetime']
+                pub_date = article_data['datetime']
 
-                stock_article = StockArticle(stock_ticker=stock_ticker,url=web_url)
-
-                stock_article.publish_date = publish_date
-
-                stock_articles.append(stock_article)
+                articles.append(Article(url=article_url,publish_date=pub_date))
 
         except Exception as e: self.logger.error(e)
 
-        return stock_articles
+        return articles
 
 
