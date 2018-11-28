@@ -5,7 +5,7 @@ from logging.config import fileConfig
 from datetime import datetime, date
 from service.news_collector import NewsCollector
 from service.news_rater import NewsRater
-from service.models import *
+from service.models import Stock
 from service.histogram_generator import HistogramGenerator
 
 class StockNewsAnalyzer(object):
@@ -42,28 +42,4 @@ class StockNewsAnalyzer(object):
 
             #     stock_article.save()
 
-            self.logger.info('Gathering data for histograms.')
-
-            content_type_headline = ContentType.get(type='headline')
-
-            content_type_body = ContentType.get(type='body')
-
-            raw_headline_scores = Score.select(Score.value).join(ContentScore, JOIN.INNER).join(Content, JOIN.INNER).join(ArticleContent, JOIN.INNER).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((Content.content_type == content_type_headline) & (StockArticle.stock_ticker == stock) & (Article.save_date == date.today().strftime('%Y-%m-%d')) & (Score.value != 0))
-
-            raw_body_scores = Score.select(Score.value).join(ContentScore, JOIN.INNER).join(Content, JOIN.INNER).join(ArticleContent, JOIN.INNER).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((Content.content_type == content_type_body) & (StockArticle.stock_ticker == stock) & (Article.save_date == date.today().strftime('%Y-%m-%d')) & (Score.value != 0))
-
-            headline_scores = [raw_headline_score.value for raw_headline_score in raw_headline_scores]
-
-            body_scores = [raw_body_score.value for raw_body_score in raw_body_scores]
-
-            headline_body_scores = headline_scores + body_scores
-
-            title_dataset_map = {}
-
-            title_dataset_map['HEADLINE'] = headline_scores
-
-            title_dataset_map['BODY'] = body_scores
-
-            title_dataset_map['HEADLINE & BODY'] = headline_body_scores
-
-            self.histogram_generator.generate_histogram(stock_ticker,title_dataset_map)
+            self.histogram_generator.generate_histogram_for_stock(stock)
