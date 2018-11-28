@@ -36,8 +36,8 @@ class NewsCollector(object):
 
     def __review_articles(self,articles):
 
-        for article in articles:
+        for index, article in enumerate(articles):
 
             existing_article = Article.get_or_none(url=article.url)
 
-            article = existing_article if existing_article is not None else article
+            articles[index] = existing_article if existing_article is not None else article

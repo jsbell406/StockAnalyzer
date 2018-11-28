@@ -32,17 +32,29 @@ class StockNewsAnalyzer(object):
 
             self.logger.info('Rating ' + stock.ticker)
 
-            articles = self.news_collector.collect_news_for_stock(stock)
+            # articles = self.news_collector.collect_news_for_stock(stock)
 
-            self.news_rater.rate_news(articles)
+            # self.news_rater.rate_news(articles)
+
+            # for article in articles:
+
+            #     stock_article = StockArticle.create(stock_ticker=stock,article_id=article)
+
+            #     stock_article.save()
+
+            self.logger.info('Gathering data for histograms.')
 
             content_type_headline = ContentType.get(type='headline')
 
             content_type_body = ContentType.get(type='body')
 
-            headline_scores = Score.select(Score.value).join(ContentScore, JOIN.INNER).join(Content, JOIN.INNER).join(ArticleContent, JOIN.INNER).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((Content.content_type == content_type_headline) & (Stock == stock) & (Article.save_date == date.today().strftime('%Y-%m-%d')))
+            raw_headline_scores = Score.select(Score.value).join(ContentScore, JOIN.INNER).join(Content, JOIN.INNER).join(ArticleContent, JOIN.INNER).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((Content.content_type == content_type_headline) & (StockArticle.stock_ticker == stock) & (Article.save_date == date.today().strftime('%Y-%m-%d')) & (Score.value != 0))
 
-            body_scores = Score.select(Score.value).join(ContentScore, JOIN.INNER).join(Content, JOIN.INNER).join(ArticleContent, JOIN.INNER).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((Content.content_type == content_type_body) & (Stock == stock) & (Article.save_date == date.today().strftime('%Y-%m-%d')))
+            raw_body_scores = Score.select(Score.value).join(ContentScore, JOIN.INNER).join(Content, JOIN.INNER).join(ArticleContent, JOIN.INNER).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((Content.content_type == content_type_body) & (StockArticle.stock_ticker == stock) & (Article.save_date == date.today().strftime('%Y-%m-%d')) & (Score.value != 0))
+
+            headline_scores = [raw_headline_score.value for raw_headline_score in raw_headline_scores]
+
+            body_scores = [raw_body_score.value for raw_body_score in raw_body_scores]
 
             headline_body_scores = headline_scores + body_scores
 

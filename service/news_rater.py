@@ -45,6 +45,8 @@ class NewsRater(object):
 
     def map_articles_to_hosts(self, articles):
 
+        self.logger.info('Mapping articles to hosts.')
+
         host_articles_map = {}
 
         for stock_article in articles:
@@ -57,18 +59,17 @@ class NewsRater(object):
 
         return host_articles_map
 
-        # https://www.ploggingdev.com/2017/01/multiprocessing-and-multithreading-in-python-3/
-        # with Pool(len(host_articles_map.keys())) as process_pool:
-
-        #     for host in host_articles_map.keys(): process_pool.map(self.score_articles, host_articles_map[host])
-
     def score_articles(self,articles):
+
+        self.logger.info('Scoring articles.')
 
         for article in articles:
 
             if article.id is None: # None means the article doesn't exist in the DB.
-                
-                article.save()
+
+                content_type_headline = ContentType.get(type='headline')
+
+                content_type_body = ContentType.get(type='body')
 
                 try:
 
@@ -80,25 +81,11 @@ class NewsRater(object):
 
                     article.publish_date = newspaper_article.publish_date if article.publish_date is None else article.publish_date
 
-                    content_type_headline = ContentType.get(type='headline')
+                    article.save()
 
-                    content_type_body = ContentType.get(type='body')
+                    self.__save_content(newspaper_article.title, content_type_headline, article)
 
-                    for i in range(2):
-
-                        newspaper_content = newspaper_article.title if i == 0 else newspaper_article.text
-
-                        content = Content(text=newspaper_content,type=(content_type_headline.id if i == 0 else content_type_body.id))
-
-                        content.save()
-
-                        ArticleContent.create(article_id=article.id,content_id=content.id)
-
-                        score = self.__score_content(newspaper_content)
-
-                        score.save()
-
-                        ContentScore.create(content_id=content.id,score_id=score.id)
+                    self.__save_content(newspaper_article.text,content_type_body,article)
 
                     # Don't want to overdo it.
                     time.sleep(5)
@@ -107,9 +94,25 @@ class NewsRater(object):
 
                     self.logger.error(e)
 
-    def __score_content(self,text):
+    def __save_content(self, content, content_type, article):
 
-        sentences = tokenize.sent_tokenize(text)
+        content = Content.create(text=content,content_type=content_type)
+
+        content.save()
+
+        article_content = ArticleContent.create(article_id=article,content_id=content)
+
+        article_content.save()
+
+        score = self.__score_content(content)
+
+        content_score = ContentScore.create(content_id=content,score_id=score)
+
+        content_score.save()
+
+    def __score_content(self,content):
+
+        sentences = tokenize.sent_tokenize(content.text)
 
         total_compound_score = 0
 
@@ -117,6 +120,10 @@ class NewsRater(object):
 
         raw_score = total_compound_score / len(sentences)
 
-        score = Score(value=raw_score)
+        score = Score.create(value=raw_score)
+
+        score.save()
 
         return score
+
+    

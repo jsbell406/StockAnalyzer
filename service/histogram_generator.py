@@ -22,8 +22,10 @@ class HistogramGenerator(object):
 
             dataset = title_dataset_map[title]
 
-            axs[index].hist(dataset, bins=10, )
+            axs[index].hist(dataset, bins=10)
 
             axs[index].set_xlim([-1,1])
+
+            axs[index].set_title(title)
 
         plt.show()    

@@ -1,34 +1,11 @@
-2018-11-27 07:11:17,188 news_source.py:__init__:17           INFO     Loaded NewsSource: articlefeeds.nasdaq.com
-2018-11-27 07:11:17,189 news_source.py:__init__:17           INFO     Loaded NewsSource: www.zacks.com
-2018-11-27 07:11:17,189 news_source.py:__init__:17           INFO     Loaded NewsSource: api.nytimes.com
-2018-11-27 07:11:17,189 news_source.py:__init__:17           INFO     Loaded NewsSource: content.guardianapis.com
-2018-11-27 07:11:17,189 news_source.py:__init__:17           INFO     Loaded NewsSource: api.iextrading.com
-2018-11-27 07:11:17,189 news_collector.py:__init__:15           INFO     StockNewsCollector Loaded
-2018-11-27 07:11:17,203 news_rater.py:__init__:24           INFO     StockNewsRater Loaded
-2018-11-27 07:11:17,203 histogram_generator.py:__init__:13           INFO     HistogramGenerator Loaded
-2018-11-27 07:11:17,203 stock_news_analyzer.py:__init__:25           INFO     StockRater loaded
-2018-11-27 07:11:17,205 stock_news_analyzer.py:analyze_stock:33           INFO     Rating NVDA
-2018-11-27 07:11:17,205 news_collector.py:collect_news_for_stock:19           INFO     Collecting articles for NVDA
-2018-11-27 07:11:17,208 news_source.py:collect_articles:41           INFO     Collecting articles via RSS
-2018-11-27 07:11:17,208 news_source.py:collect_articles:77           INFO     Collecting Articles via Requests/Regex
-2018-11-27 07:11:17,208 news_source.py:collect_articles:105          INFO     Collecting Articles via JSON
-2018-11-27 07:11:17,211 news_source.py:collect_articles:105          INFO     Collecting Articles via JSON
-2018-11-27 07:11:17,211 news_source.py:collect_articles:105          INFO     Collecting Articles via JSON
-2018-11-27 07:11:17,502 news_source.py:collect_articles:89           ERROR    ('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))
-2018-11-27 07:11:28,837 news_rater.py:rate_news:28           INFO     Reviewing 65 articles.
-2018-11-27 07:11:29,735 news_rater.py:score_articles:108          ERROR    NOT NULL constraint failed: Content.content_type
-2018-11-27 07:11:30,245 news_rater.py:score_articles:108          ERROR    NOT NULL constraint failed: Content.content_type
-2018-11-27 07:11:30,380 news_rater.py:score_articles:108          ERROR    NOT NULL constraint failed: Content.content_type
-2018-11-27 07:11:30,486 news_rater.py:score_articles:108          ERROR    NOT NULL constraint failed: Content.content_type
-2018-11-27 07:11:30,544 news_rater.py:score_articles:108          ERROR    NOT NULL constraint failed: Content.content_type
-2018-11-27 07:11:30,998 news_rater.py:score_articles:108          ERROR    NOT NULL constraint failed: Content.content_type
-2018-11-27 07:11:31,105 news_rater.py:score_articles:108          ERROR    NOT NULL constraint failed: Content.content_type
-2018-11-27 07:11:31,594 news_rater.py:score_articles:108          ERROR    NOT NULL constraint failed: Content.content_type
-2018-11-27 07:11:31,811 news_rater.py:score_articles:108          ERROR    NOT NULL constraint failed: Content.content_type
-2018-11-27 07:11:32,012 news_rater.py:score_articles:108          ERROR    NOT NULL constraint failed: Content.content_type
-2018-11-27 07:11:32,124 news_rater.py:score_articles:108          ERROR    NOT NULL constraint failed: Content.content_type
-2018-11-27 07:11:32,580 news_rater.py:score_articles:108          ERROR    NOT NULL constraint failed: Content.content_type
-2018-11-27 07:11:32,607 news_rater.py:score_articles:108          ERROR    NOT NULL constraint failed: Content.content_type
-2018-11-27 07:11:32,784 news_rater.py:score_articles:108          ERROR    NOT NULL constraint failed: Content.content_type
-2018-11-27 07:11:32,998 news_rater.py:score_articles:108          ERROR    NOT NULL constraint failed: Content.content_type
-2018-11-27 07:11:33,114 news_rater.py:score_articles:108          ERROR    NOT NULL constraint failed: Content.content_type
+2018-11-28 07:19:31,013 news_source.py:__init__:17           INFO     Loaded NewsSource: articlefeeds.nasdaq.com
+2018-11-28 07:19:31,013 news_source.py:__init__:17           INFO     Loaded NewsSource: www.zacks.com
+2018-11-28 07:19:31,014 news_source.py:__init__:17           INFO     Loaded NewsSource: api.nytimes.com
+2018-11-28 07:19:31,014 news_source.py:__init__:17           INFO     Loaded NewsSource: content.guardianapis.com
+2018-11-28 07:19:31,014 news_source.py:__init__:17           INFO     Loaded NewsSource: api.iextrading.com
+2018-11-28 07:19:31,014 news_collector.py:__init__:15           INFO     StockNewsCollector Loaded
+2018-11-28 07:19:31,028 news_rater.py:__init__:24           INFO     StockNewsRater Loaded
+2018-11-28 07:19:31,028 histogram_generator.py:__init__:13           INFO     HistogramGenerator Loaded
+2018-11-28 07:19:31,028 stock_news_analyzer.py:__init__:25           INFO     StockRater loaded
+2018-11-28 07:19:31,030 stock_news_analyzer.py:analyze_stock:33           INFO     Rating NVDA
+2018-11-28 07:19:31,030 stock_news_analyzer.py:analyze_stock:45           INFO     Gathering data for histograms.
