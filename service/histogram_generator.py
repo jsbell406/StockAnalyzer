@@ -12,7 +12,7 @@ class HistogramGenerator(object):
 
         self.logger.info('HistogramGenerator Loaded')
 
-    def generate_histogram(self,sup_title,title_dataset_map):
+    def generate_histogram(self,window_title,title_dataset_map):
 
         num_datasets = len(title_dataset_map)
 
@@ -28,6 +28,6 @@ class HistogramGenerator(object):
 
             axs[index].set_title(title)
 
-        fig.suptitle(sup_title, fontsize=16)
+        fig.canvas.set_window_title(window_title)
 
         plt.show()    
