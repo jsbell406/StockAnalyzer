@@ -66,4 +66,4 @@ class StockNewsAnalyzer(object):
 
             title_dataset_map['HEADLINE & BODY'] = headline_body_scores
 
-            self.histogram_generator.generate_histogram(title_dataset_map)
+            self.histogram_generator.generate_histogram(stock_ticker,title_dataset_map)
