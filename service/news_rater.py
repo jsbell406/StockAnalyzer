@@ -6,7 +6,7 @@ import time
 from datetime import datetime, date, timedelta
 from nltk import tokenize
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-from service.models import Article, Content, Score, ArticleContent, ContentScore, ContentType
+from service.models import Article, Content, Score, ArticleContent, ContentScore, ContentType, Stock, StockArticle
 
 class NewsRater(object):
 
@@ -24,7 +24,7 @@ class NewsRater(object):
 
         self.logger.info('StockNewsRater Loaded')
 
-    def rate_news(self,articles):
+    def rate_news(self,articles,stock):
 
         self.logger.info('Reviewing {} articles.'.format(len(articles)))
 
@@ -34,7 +34,7 @@ class NewsRater(object):
 
         for host in host_articles_map.keys(): 
             
-            thread = threading.Thread(target=self.score_articles, args=(host_articles_map[host],))
+            thread = threading.Thread(target=self.score_articles, args=(host_articles_map[host],stock))
 
             thread.daemon = True
 
@@ -60,7 +60,7 @@ class NewsRater(object):
 
         return host_articles_map
 
-    def score_articles(self,articles):
+    def score_articles(self,articles,stock):
 
         self.logger.info('Scoring articles.')
 
@@ -90,13 +90,17 @@ class NewsRater(object):
 
                     text_score = self.__score_content(newspaper_article.text)
 
-                    if self.__publish_date_valid(article) and (title_score != 0 or text_score != 0):
+                    if self.__publish_date_valid(article) and self.__stock_mentioned_in_article(stock,newspaper_article.title, newspaper_article.text) and (title_score != 0 or text_score != 0):
 
                         article.save()
 
                         if title_score != 0: self.__save_content(newspaper_article.title, title_score, content_type_headline, article)
 
                         if text_score != 0: self.__save_content(newspaper_article.text, text_score, content_type_body, article)
+
+                        stock_article = StockArticle.create(stock_ticker=stock,article=article)
+
+                        stock_article.save()
 
                     else: articles_to_remove.append(article)
 
@@ -154,3 +158,17 @@ class NewsRater(object):
             self.logger.error(e)
 
         return publish_date_valid
+
+    def __stock_mentioned_in_article(self,stock,title,text):
+
+        stock_mentioned_in_article = False
+
+        if title is not None:
+
+            stock_mentioned_in_article = stock.ticker in title or stock.name in title
+
+        if text is not None and stock_mentioned_in_article == False:
+
+            stock_mentioned_in_article = stock.ticker in text or stock.name in text
+
+        return stock_mentioned_in_article

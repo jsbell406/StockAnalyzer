@@ -35,14 +35,6 @@ class StockNewsAnalyzer(object):
 
             articles = self.news_collector.collect_news_for_stock(stock)
 
-            self.news_rater.rate_news(articles)
-
-            for article in articles:
-
-                if article.id is None: continue
-
-                stock_article = StockArticle.create(stock_ticker=stock,article=article)
-
-                stock_article.save()
+            self.news_rater.rate_news(articles,stock)
 
             self.histogram_generator.generate_histogram_for_stock(stock)
