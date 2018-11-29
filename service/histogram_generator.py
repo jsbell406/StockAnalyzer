@@ -34,16 +34,20 @@ class HistogramGenerator(object):
 
         fig, axs = plt.subplots(1, 3, sharey=True, tight_layout=True)
 
-        for index, title in enumerate(title_dataset_map.keys()):
+        self.__create_subplot(axs,0,headline_scores,'Headline Scores')
 
-            dataset = title_dataset_map[title]
+        self.__create_subplot(axs,1,headline_body_scores,'Headline & Body Scores')
 
-            axs[index].hist(dataset, bins=10)
-
-            axs[index].set_xlim([-1,1])
-
-            axs[index].set_title(title)
+        self.__create_subplot(axs,2,body_scores,'Body Scores')
 
         fig.canvas.set_window_title(stock.ticker)
 
         plt.show()    
+
+    def __create_subplot(self,axs,index,dataset,title):
+
+        axs[index].hist(dataset, bins=10)
+
+        axs[index].set_xlim([-1,1])
+
+        axs[index].set_title(title)
