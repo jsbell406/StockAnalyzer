@@ -1,14 +1,14 @@
 import logging
 from multiprocessing.pool import ThreadPool
 import time
-from service.news_source import Nasdaq, Zacks, NYT, TheGuardian, IEX
+from service.news_source import Nasdaq, Zacks, NYT, TheGuardian, IEX, SwingTradeBot
 from service.models import Stock, Article
 
 class NewsCollector(object):
 
     def __init__(self):
 
-        self.news_sources = [Nasdaq(),Zacks(), NYT(), TheGuardian(), IEX()]
+        self.news_sources = [Nasdaq(),Zacks(), NYT(), TheGuardian(), IEX(), SwingTradeBot()]
 
         self.logger = logging.getLogger()
 

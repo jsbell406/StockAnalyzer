@@ -147,9 +147,17 @@ class NewsRater(object):
 
         try:
 
-            pub_date = article.publish_date if 'T' not in article.publish_date else article.publish_date.split('T')[0]
+            pub_date = None
 
-            pub_date = datetime.strptime(pub_date,'%Y-%m-%d').date()
+            if isinstance(article.publish_date, str):
+
+                pub_date = article.publish_date if 'T' not in article.publish_date else article.publish_date.split('T')[0]
+
+                pub_date = datetime.strptime(pub_date,'%Y-%m-%d').date()
+
+            elif isinstance(article.publish_date, datetime):
+
+                pub_date = article.publish_date.date()
 
             publish_date_valid = pub_date >= (date.today() - timedelta(days = 7))
 

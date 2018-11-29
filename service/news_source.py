@@ -156,6 +156,11 @@ class Zacks(NewsSourceRegex):
 
         super().__init__('https://www.zacks.com/data_handler/stocks/stock_quote_news.php?provider=others&cat={}&limit=30&record=1',r'href=".*?\/\/(.+?)"')
 
+class SwingTradeBot(NewsSourceRegex):
+
+    def __init__(self):
+
+        super().__init__('https://swingtradebot.com/equities/{}',r'<td><a target="_blank" rel="noopener" href="(.+?)"')
 
 ## Json
 

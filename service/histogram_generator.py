@@ -46,7 +46,7 @@ class HistogramGenerator(object):
 
     def __create_subplot(self,axs,index,dataset,title):
 
-        axs[index].hist(dataset, bins=10)
+        axs[index].hist(dataset, bins=20)
 
         axs[index].set_xlim([-1,1])
 
