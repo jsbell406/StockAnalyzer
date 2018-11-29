@@ -3,6 +3,7 @@ import re
 import threading
 import newspaper
 import time
+from datetime import datetime, date, timedelta
 from nltk import tokenize
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from service.models import Article, Content, Score, ArticleContent, ContentScore, ContentType
@@ -63,7 +64,11 @@ class NewsRater(object):
 
         self.logger.info('Scoring articles.')
 
+        articles_to_remove = []
+
         for article in articles:
+
+            self.logger.info('Scoring ' + article.url)
 
             if article.id is None: # None means the article doesn't exist in the DB.
 
@@ -81,11 +86,19 @@ class NewsRater(object):
 
                     article.publish_date = newspaper_article.publish_date if article.publish_date is None else article.publish_date
 
-                    article.save()
+                    title_score = self.__score_content(newspaper_article.title)
 
-                    self.__save_content(newspaper_article.title, content_type_headline, article)
+                    text_score = self.__score_content(newspaper_article.text)
 
-                    self.__save_content(newspaper_article.text,content_type_body,article)
+                    if self.__publish_date_valid(article) and (title_score != 0 or text_score != 0):
+
+                        article.save()
+
+                        if title_score != 0: self.__save_content(newspaper_article.title, title_score, content_type_headline, article)
+
+                        if text_score != 0: self.__save_content(newspaper_article.text, text_score, content_type_body, article)
+
+                    else: articles_to_remove.append(article)
 
                     # Don't want to overdo it.
                     time.sleep(5)
@@ -94,25 +107,9 @@ class NewsRater(object):
 
                     self.logger.error(e)
 
-    def __save_content(self, content, content_type, article):
+    def __score_content(self,content_text):
 
-        content = Content.create(text=content,content_type=content_type)
-
-        content.save()
-
-        article_content = ArticleContent.create(article_id=article,content_id=content)
-
-        article_content.save()
-
-        score = self.__score_content(content)
-
-        content_score = ContentScore.create(content_id=content,score_id=score)
-
-        content_score.save()
-
-    def __score_content(self,content):
-
-        sentences = tokenize.sent_tokenize(content.text)
+        sentences = tokenize.sent_tokenize(content_text)
 
         total_compound_score = 0
 
@@ -120,10 +117,40 @@ class NewsRater(object):
 
         raw_score = total_compound_score / len(sentences)
 
-        score = Score.create(value=raw_score)
+        return raw_score
+
+    def __save_content(self, content_text, content_score, content_type, article):
+
+        content = Content.create(text=content_text,content_type=content_type)
+
+        content.save()
+
+        article_content = ArticleContent.create(article_id=article,content_id=content)
+
+        article_content.save()
+
+        score = Score.create(value=content_score)
 
         score.save()
 
-        return score
+        content_score = ContentScore.create(content_id=content,score_id=score)
 
-    
+        content_score.save()
+
+    def __publish_date_valid(self,article):
+
+        publish_date_valid = False
+
+        try:
+
+            pub_date = article.publish_date if 'T' not in article.publish_date else article.publish_date.split('T')[0]
+
+            pub_date = datetime.strptime(pub_date,'%Y-%m-%d').date()
+
+            publish_date_valid = pub_date >= (date.today() - timedelta(days = 7))
+
+        except Exception as e:
+
+            self.logger.error(e)
+
+        return publish_date_valid

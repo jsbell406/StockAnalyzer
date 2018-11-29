@@ -5,8 +5,9 @@ from logging.config import fileConfig
 from datetime import datetime, date
 from service.news_collector import NewsCollector
 from service.news_rater import NewsRater
-from service.models import Stock
+from service.models import Stock, StockArticle
 from service.histogram_generator import HistogramGenerator
+from peewee import IntegrityError
 
 class StockNewsAnalyzer(object):
 
@@ -32,14 +33,16 @@ class StockNewsAnalyzer(object):
 
             self.logger.info('Rating ' + stock.ticker)
 
-            # articles = self.news_collector.collect_news_for_stock(stock)
+            articles = self.news_collector.collect_news_for_stock(stock)
 
-            # self.news_rater.rate_news(articles)
+            self.news_rater.rate_news(articles)
 
-            # for article in articles:
+            for article in articles:
 
-            #     stock_article = StockArticle.create(stock_ticker=stock,article_id=article)
+                if article.id is None: continue
 
-            #     stock_article.save()
+                stock_article = StockArticle.create(stock_ticker=stock,article=article)
+
+                stock_article.save()
 
             self.histogram_generator.generate_histogram_for_stock(stock)
