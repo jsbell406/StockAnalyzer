@@ -113,13 +113,17 @@ class NewsRater(object):
 
     def __score_content(self,content_text):
 
+        raw_score = 0
+
         sentences = tokenize.sent_tokenize(content_text)
 
-        total_compound_score = 0
+        if len(sentences) > 0:
 
-        for sentence in sentences: total_compound_score += self.analyzer.polarity_scores(sentence)['compound']
+            total_compound_score = 0
 
-        raw_score = total_compound_score / len(sentences)
+            for sentence in sentences: total_compound_score += self.analyzer.polarity_scores(sentence)['compound']
+
+            raw_score = total_compound_score / len(sentences)
 
         return raw_score
 

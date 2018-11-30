@@ -51,3 +51,7 @@ class HistogramGenerator(object):
         axs[index].set_xlim([-1,1])
 
         axs[index].set_title(title)
+
+    def show_plt(self,plt):
+
+        plt.show()

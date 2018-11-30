@@ -1,12 +1,11 @@
-2018-11-29 06:52:21,411 news_source.py:__init__:17           INFO     Loaded NewsSource: articlefeeds.nasdaq.com
-2018-11-29 06:52:21,411 news_source.py:__init__:17           INFO     Loaded NewsSource: www.zacks.com
-2018-11-29 06:52:21,411 news_source.py:__init__:17           INFO     Loaded NewsSource: api.nytimes.com
-2018-11-29 06:52:21,411 news_source.py:__init__:17           INFO     Loaded NewsSource: content.guardianapis.com
-2018-11-29 06:52:21,412 news_source.py:__init__:17           INFO     Loaded NewsSource: api.iextrading.com
-2018-11-29 06:52:21,412 news_source.py:__init__:17           INFO     Loaded NewsSource: swingtradebot.com
-2018-11-29 06:52:21,412 news_collector.py:__init__:15           INFO     StockNewsCollector Loaded
-2018-11-29 06:52:21,426 news_rater.py:__init__:25           INFO     StockNewsRater Loaded
-2018-11-29 06:52:21,426 histogram_generator.py:__init__:15           INFO     HistogramGenerator Loaded
-2018-11-29 06:52:21,426 stock_news_analyzer.py:__init__:26           INFO     StockRater loaded
-2018-11-29 06:52:21,428 stock_news_analyzer.py:analyze_stock:34           INFO     Rating NVDA
-2018-11-29 06:52:21,428 histogram_generator.py:generate_histogram_for_stock:19           INFO     Generating histogram for NVDA
+2018-11-30 07:13:33,783 news_source.py:__init__:17           INFO     Loaded NewsSource: articlefeeds.nasdaq.com
+2018-11-30 07:13:33,783 news_source.py:__init__:17           INFO     Loaded NewsSource: www.zacks.com
+2018-11-30 07:13:33,783 news_source.py:__init__:17           INFO     Loaded NewsSource: api.nytimes.com
+2018-11-30 07:13:33,783 news_source.py:__init__:17           INFO     Loaded NewsSource: content.guardianapis.com
+2018-11-30 07:13:33,783 news_source.py:__init__:17           INFO     Loaded NewsSource: api.iextrading.com
+2018-11-30 07:13:33,784 news_source.py:__init__:17           INFO     Loaded NewsSource: swingtradebot.com
+2018-11-30 07:13:33,784 news_collector.py:__init__:15           INFO     StockNewsCollector Loaded
+2018-11-30 07:13:33,808 news_rater.py:__init__:25           INFO     StockNewsRater Loaded
+2018-11-30 07:13:33,808 histogram_generator.py:__init__:16           INFO     HistogramGenerator Loaded
+2018-11-30 07:13:33,808 stock_news_analyzer.py:__init__:28           INFO     StockRater loaded
+2018-11-30 07:13:33,810 histogram_generator.py:generate_histogram_for_stock:20           INFO     Generating histogram for NVDA

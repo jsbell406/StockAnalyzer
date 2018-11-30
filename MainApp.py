@@ -32,3 +32,5 @@ if __name__ == '__main__':
     StockNewsAnalyzer().analyze_stock(stock_ticker)
 
     print(create_time_spent_message(start_time,stock_ticker))
+
+    

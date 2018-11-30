@@ -53,6 +53,7 @@ class ContentType(BaseModel):
 class Stock(BaseModel):
     name = TextField(null=True)
     ticker = TextField(primary_key=True)
+    market = TextField(null=True)
 
     class Meta:
         table_name = 'Stock'
