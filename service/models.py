@@ -50,10 +50,30 @@ class ContentType(BaseModel):
     class Meta:
         table_name = 'Content_Type'
 
+class Rater(BaseModel):
+    name = TextField(null=True)
+
+    class Meta:
+        table_name = 'Rater'
+
+class Rating(BaseModel):
+    rating_date = TextField(null=True)
+    value = IntegerField()
+
+    class Meta:
+        table_name = 'Rating'
+
+class RaterRating(BaseModel):
+    rater = ForeignKeyField(column_name='rater_id', field='id', model=Rater)
+    rating = ForeignKeyField(column_name='rating_id', field='id', model=Rating)
+
+    class Meta:
+        table_name = 'Rater_Rating'
+
 class Stock(BaseModel):
+    market = TextField(null=True)
     name = TextField(null=True)
     ticker = TextField(primary_key=True)
-    market = TextField(null=True)
 
     class Meta:
         table_name = 'Stock'
@@ -64,6 +84,13 @@ class StockArticle(BaseModel):
 
     class Meta:
         table_name = 'Stock_Article'
+
+class StockRating(BaseModel):
+    rating = ForeignKeyField(column_name='rating_id', model=Stock)
+    stock_ticker = ForeignKeyField(backref='Stock_stock_ticker_set', column_name='stock_ticker', field='ticker', model=Stock)
+
+    class Meta:
+        table_name = 'Stock_Rating'
 
 class SqliteSequence(BaseModel):
     name = UnknownField(null=True)  # 

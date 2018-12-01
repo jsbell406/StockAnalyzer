@@ -24,7 +24,7 @@ class NewsCollector(object):
 
         articles = []
 
-        for news_source in self.news_sources: workers.append(thread_pool.apply_async(news_source.collect_articles,(stock,)))
+        for news_source in self.news_sources: workers.append(thread_pool.apply_async(news_source.collect_data_from_source_for_stock,(stock,)))
 
         for worker in workers:
 

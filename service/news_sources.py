@@ -1,34 +1,11 @@
-import re
 import feedparser
 import logging
 import requests
 from datetime import date, timedelta
 import time
+import re
 from service.models import Article
-
-class NewsSource(object):
-
-    def __init__(self,source_url):
-
-        self.source_url = source_url
-
-        self.logger = logging.getLogger()
-
-        self.logger.info('Loaded NewsSource: ' + self.__str__())
-
-    def construct_url(self,stock):
-
-        return self.source_url.format(stock.ticker)
-
-    def collect_articles(self,stock):
-
-        pass
-
-    def __str__(self):
-
-        return re.findall('://(.+?)/',self.source_url)[0]
-
-# ==================================================
+from service.data_sources import NewsSource
 
 class NewsSourceRss(NewsSource):
 
@@ -36,7 +13,7 @@ class NewsSourceRss(NewsSource):
 
         super().__init__(source_url)
 
-    def collect_articles(self,stock):
+    def collect_data_from_source_for_stock(self,stock):
 
         self.logger.info('Collecting articles via RSS')
 
@@ -72,7 +49,7 @@ class NewsSourceRegex(NewsSource):
 
         self.collection_regex = collection_regex
 
-    def collect_articles(self,stock):
+    def collect_data_from_source_for_stock(self,stock):
 
         self.logger.info('Collecting Articles via Requests/Regex')
 
@@ -100,7 +77,7 @@ class NewsSourceJSON(NewsSource):
 
         self.api_key = api_key
 
-    def collect_articles(self,stock):
+    def collect_data_from_source_for_stock(self,stock):
 
         self.logger.info('Collecting Articles via JSON')
 
@@ -273,5 +250,3 @@ class IEX(NewsSourceJSON):
         except Exception as e: self.logger.error(e)
 
         return articles
-
-

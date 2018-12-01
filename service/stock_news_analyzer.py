@@ -57,25 +57,18 @@ class StockNewsAnalyzer(object):
 
         market = None
 
-        url = 'https://www.marketwatch.com/tools/quotes/lookup.asp?Lookup=' + stock_ticker
+        try:
 
-        response = requests.get(url)
+            response = requests.get('https://api.iextrading.com/1.0/stock/{}/company'.format(stock_ticker))
 
-        response_text = response.text
+            json_data = response.json()
 
-        for match in re.findall(r'<div class="results">[\s\S]+?<td class="bottomborder">([^<].+?)<\/td>[\s\S]+?<td class="bottomborder">(.+?)<\/td>',response_text):
+            name = json_data['companyName']
 
-            name = html.unescape(match[0])
+            market = json_data['exchange']
 
-            market = html.unescape(match[1])
+        except Exception as e:
 
-        # Sometimes you get redirected to the Stock's primary MarketWatch page.
-        if name is None:
-
-            for match in re.findall(r'<title>.+?- (.+?) Stock Quote .+?: (.+?) .+?-',response_text):
-
-                name = html.unescape(match[0])
-
-                market = html.unescape(match[1])
+            self.logger.error(e)
 
         return name, market

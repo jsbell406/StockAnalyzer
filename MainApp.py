@@ -22,15 +22,17 @@ def create_time_spent_message(start_time,stock_ticker):
 
 if __name__ == '__main__':
 
-    start_time = time.time()
+    # start_time = time.time()
 
-    # stock_ticker = sys.argv[1]
+    # # stock_ticker = sys.argv[1]
 
-    stock_ticker = 'NVDA'
+    # stock_ticker = 'NVDA'
     
-    # Testing
-    StockNewsAnalyzer().analyze_stock(stock_ticker)
+    # # Testing
+    # StockNewsAnalyzer().analyze_stock(stock_ticker)
 
-    print(create_time_spent_message(start_time,stock_ticker))
+    # print(create_time_spent_message(start_time,stock_ticker))
 
-    
+
+
+        
