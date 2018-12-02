@@ -5,11 +5,12 @@ from logging.config import fileConfig
 from datetime import datetime, date
 from service.news_collector import NewsCollector
 from service.news_rater import NewsRater
-from service.models import Stock, StockArticle
+from service.models import *
 from service.histogram_generator import HistogramGenerator
 from peewee import IntegrityError
 import requests
 import html
+from service.stock_rater import StockRater
 
 class StockNewsAnalyzer(object):
 
@@ -23,13 +24,19 @@ class StockNewsAnalyzer(object):
 
         self.histogram_generator = HistogramGenerator()
 
+        self.stock_rater = StockRater()
+
         self.logger = logging.getLogger()
 
-        self.logger.info('StockRater loaded')
+        self.logger.info('StockNewsAnalzer Loaded.')
 
-    def analyze_stock(self,stock_ticker):
+    def analyze_stock(self,stock_ticker=None, target_stock=None):
 
-        stock = Stock.get_or_none(ticker=stock_ticker)
+        if stock_ticker is None and target_stock is None: raise Exception('Please provide either a Stock or Stock Ticker.')
+
+        if stock_ticker is not None and target_stock is not None: raise Exception('Please provide only a Stock or a Stock Ticker, not both.')
+
+        stock = target_stock if target_stock is not None else Stock.get_or_none(ticker=stock_ticker)
 
         if stock is None:
 

@@ -22,7 +22,7 @@ class NewsRater(object):
 
         self.article_config.headers = {'User-Agent': 'My User Agent 1.0','From': 'youremail@domain.com'}
 
-        self.logger.info('StockNewsRater Loaded')
+        self.logger.info('StockNewsRater Loaded.')
 
     def rate_news(self,articles,stock):
 

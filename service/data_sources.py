@@ -1,5 +1,6 @@
 import logging
 import re
+import requests
 from service.models import Rater, Rating, StockRating, RaterRating
 
 class DataSource(object):
@@ -50,11 +51,11 @@ class RatingSource(DataSource):
 
         headers = {'User-Agent': 'My User Agent 1.0','From': 'youremail@domain.com'}
 
-        response = requests.get(url,allow_redirects=True,headers=self.headers)
+        response = requests.get(url,allow_redirects=True,headers=headers)
 
         text = response.text
 
-        rating = re.findall(source.regex_string,text)[0].strip()
+        rating = re.findall(self.regex_string,text)[0].strip()
 
         rating = self.parse_rating(rating)
 
@@ -72,20 +73,22 @@ class RatingSource(DataSource):
 
     def __save_rating(self,stock,rating_value):
 
-        rater = Rater.get_or_none(url=self.__str__())
+        rater = Rater.get_or_none(name=self.__str__())
 
         if rater is None:
 
-            rater = Rater.create(url=self.__str__())
+            rater = Rater.create(name=self.__str__())
 
             rater.save()
 
         rating = Rating.create(value=rating_value)
 
-        rater_rating = RaterRating.create(rater=rater,rating=rating)
+        rating.save()
+
+        rater_rating = RaterRating.create(rater_id=rater,rating_id=rating)
 
         rater_rating.save()
 
-        stock_rating = StockRating(stock=stock,rating=rating)
+        stock_rating = StockRating.create(stock_ticker=stock,rating_id=rating)
 
         stock_rating.save()

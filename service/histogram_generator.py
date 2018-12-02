@@ -12,7 +12,7 @@ class HistogramGenerator(object):
 
         self.logger = logging.getLogger()
 
-        self.logger.info('HistogramGenerator Loaded')
+        self.logger.info('HistogramGenerator Loaded.')
 
     def generate_histogram_for_stock(self,stock):
 
@@ -22,9 +22,9 @@ class HistogramGenerator(object):
 
         content_type_body = ContentType.get(type='body')
 
-        raw_headline_scores = Score.select(Score.value).join(ContentScore, JOIN.INNER).join(Content, JOIN.INNER).join(ArticleContent, JOIN.INNER).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((Content.content_type == content_type_headline) & (StockArticle.stock_ticker == stock) & (Article.save_date == date.today().strftime('%Y-%m-%d')) & (Score.value != 0))
+        raw_headline_scores = Score.select().join(ContentScore, JOIN.INNER).join(Content, JOIN.INNER).join(ArticleContent, JOIN.INNER).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((Content.content_type == content_type_headline) & (StockArticle.stock_ticker == stock) & (Article.save_date == date.today().strftime('%Y-%m-%d')) & (Score.value != 0))
 
-        raw_body_scores = Score.select(Score.value).join(ContentScore, JOIN.INNER).join(Content, JOIN.INNER).join(ArticleContent, JOIN.INNER).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((Content.content_type == content_type_body) & (StockArticle.stock_ticker == stock) & (Article.save_date == date.today().strftime('%Y-%m-%d')) & (Score.value != 0))
+        raw_body_scores = Score.select().join(ContentScore, JOIN.INNER).join(Content, JOIN.INNER).join(ArticleContent, JOIN.INNER).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((Content.content_type == content_type_body) & (StockArticle.stock_ticker == stock) & (Article.save_date == date.today().strftime('%Y-%m-%d')) & (Score.value != 0))
 
         headline_scores = [raw_headline_score.value for raw_headline_score in raw_headline_scores]
 

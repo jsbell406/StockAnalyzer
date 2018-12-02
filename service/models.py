@@ -86,11 +86,18 @@ class StockArticle(BaseModel):
         table_name = 'Stock_Article'
 
 class StockRating(BaseModel):
-    rating = ForeignKeyField(column_name='rating_id', model=Stock)
-    stock_ticker = ForeignKeyField(backref='Stock_stock_ticker_set', column_name='stock_ticker', field='ticker', model=Stock)
+    rating = ForeignKeyField(column_name='rating_id', field='id', model=Rating)
+    stock_ticker = ForeignKeyField(column_name='stock_ticker', field='ticker', model=Stock)
 
     class Meta:
         table_name = 'Stock_Rating'
+
+class StockRecommendation(BaseModel):
+    recommendation_date = TextField(null=True)
+    stock_ticker = ForeignKeyField(column_name='stock_ticker', field='ticker', model=Stock, null=True)
+
+    class Meta:
+        table_name = 'Stock_Recommendation'
 
 class SqliteSequence(BaseModel):
     name = UnknownField(null=True)  # 
