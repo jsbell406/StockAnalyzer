@@ -1,108 +1,12 @@
-2018-12-02 09:07:37,220 data_sources.py:__init__:34           INFO     Loaded NewsSource: articlefeeds.nasdaq.com
-2018-12-02 09:07:37,220 data_sources.py:__init__:34           INFO     Loaded NewsSource: www.zacks.com
-2018-12-02 09:07:37,220 data_sources.py:__init__:34           INFO     Loaded NewsSource: api.nytimes.com
-2018-12-02 09:07:37,220 data_sources.py:__init__:34           INFO     Loaded NewsSource: content.guardianapis.com
-2018-12-02 09:07:37,221 data_sources.py:__init__:34           INFO     Loaded NewsSource: api.iextrading.com
-2018-12-02 09:07:37,221 data_sources.py:__init__:34           INFO     Loaded NewsSource: swingtradebot.com
-2018-12-02 09:07:37,221 news_collector.py:__init__:15           INFO     StockNewsCollector Loaded.
-2018-12-02 09:07:37,240 news_rater.py:__init__:25           INFO     StockNewsRater Loaded.
-2018-12-02 09:07:37,240 histogram_generator.py:__init__:15           INFO     HistogramGenerator Loaded.
-2018-12-02 09:07:37,241 data_sources.py:__init__:46           INFO     Loaded RatingSource: www.zacks.com
-2018-12-02 09:07:37,241 stock_rater.py:__init__:16           INFO     StockRater Loaded.
-2018-12-02 09:07:37,241 stock_news_analyzer.py:__init__:31           INFO     StockNewsAnalzer Loaded.
-2018-12-02 09:07:37,243 stock_news_analyzer.py:analyze_stock:53           INFO     Rating NVDA
-2018-12-02 09:07:37,243 news_collector.py:collect_news_for_stock:19           INFO     Collecting articles for NVDA
-2018-12-02 09:07:37,246 news_sources.py:collect_data_from_source_for_stock:18           INFO     Collecting articles via RSS
-2018-12-02 09:07:37,246 news_sources.py:collect_data_from_source_for_stock:54           INFO     Collecting Articles via Requests/Regex
-2018-12-02 09:07:37,246 news_sources.py:collect_data_from_source_for_stock:82           INFO     Collecting Articles via JSON
-2018-12-02 09:07:37,246 news_sources.py:collect_data_from_source_for_stock:82           INFO     Collecting Articles via JSON
-2018-12-02 09:07:37,247 news_sources.py:collect_data_from_source_for_stock:82           INFO     Collecting Articles via JSON
-2018-12-02 09:07:37,248 news_sources.py:collect_data_from_source_for_stock:54           INFO     Collecting Articles via Requests/Regex
-2018-12-02 09:07:37,536 news_sources.py:collect_data_from_source_for_stock:66           ERROR    ('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))
-2018-12-02 09:07:48,975 news_rater.py:rate_news:29           INFO     Reviewing 75 articles.
-2018-12-02 09:07:48,976 news_rater.py:map_articles_to_hosts:49           INFO     Mapping articles to hosts.
-2018-12-02 09:07:48,979 news_rater.py:score_articles:65           INFO     Scoring articles.
-2018-12-02 09:07:48,979 news_rater.py:score_articles:71           INFO     Scoring http://articlefeeds.nasdaq.com/~r/nasdaq/symbols/~3/ZisqaZM4u88/noteworthy-friday-option-activity-le-nvda-lsi-cm1063175
-2018-12-02 09:07:48,981 news_rater.py:score_articles:65           INFO     Scoring articles.
-2018-12-02 09:07:48,982 news_rater.py:score_articles:71           INFO     Scoring https://query.nytimes.com/gst/abstract.html?res=9904E0D9103DEE3ABC4A51DFB566838D639EDE
-2018-12-02 09:07:48,981 news_rater.py:score_articles:65           INFO     Scoring articles.
-2018-12-02 09:07:48,985 news_rater.py:score_articles:71           INFO     Scoring https://www.theguardian.com/football/live/2018/dec/02/arsenal-v-tottenham-premier-league-live
-2018-12-02 09:07:48,990 news_rater.py:score_articles:65           INFO     Scoring articles.
-2018-12-02 09:07:48,990 news_rater.py:score_articles:65           INFO     Scoring articles.
-2018-12-02 09:07:48,993 news_rater.py:score_articles:71           INFO     Scoring https://api.iextrading.com/1.0/stock/nvda/article/7956677110218858
-2018-12-02 09:07:48,993 news_rater.py:score_articles:65           INFO     Scoring articles.
-2018-12-02 09:07:48,993 news_rater.py:score_articles:71           INFO     Scoring https://finance.yahoo.com/video/final-trade-nvda-len-more-223900051.html?.tsrc=rss
-2018-12-02 09:07:48,993 news_rater.py:score_articles:65           INFO     Scoring articles.
-2018-12-02 09:07:48,996 news_rater.py:score_articles:71           INFO     Scoring https://seekingalpha.com/article/4225683-nvidias-crypto-time-bomb-perception-vs-reality?source=feed_symbol_NVDA
-2018-12-02 09:07:48,997 news_rater.py:score_articles:71           INFO     Scoring https://www.benzinga.com/news/18/11/12779528/heading-south-g20-meeting-in-argentina-puts-china-trade-squarely-in-focus
-2018-12-02 09:07:50,453 news_rater.py:score_articles:112          ERROR    Article `download()` failed with Exceeded 30 redirects. on URL https://www.theguardian.com/football/live/2018/dec/02/arsenal-v-tottenham-premier-league-live
-2018-12-02 09:07:50,455 news_rater.py:score_articles:71           INFO     Scoring https://www.theguardian.com/society/2018/dec/02/nhs-to-introduce-mental-health-checks-for-new-fathers
-2018-12-02 09:07:50,636 news_rater.py:__publish_date_valid:170          ERROR    '>=' not supported between instances of 'NoneType' and 'datetime.date'
-2018-12-02 09:07:54,966 news_rater.py:score_articles:71           INFO     Scoring https://green.blogs.nytimes.com/2012/02/08/on-our-radar-a-subglacial-lake/
-2018-12-02 09:07:55,967 news_rater.py:score_articles:71           INFO     Scoring https://api.iextrading.com/1.0/stock/nvda/article/5327556840436715
-2018-12-02 09:07:56,141 news_rater.py:score_articles:71           INFO     Scoring http://articlefeeds.nasdaq.com/~r/nasdaq/symbols/~3/4YV0re00hlw/fridays-etf-with-unusual-volume-xntk-cm1063119
-2018-12-02 09:07:56,427 news_rater.py:score_articles:71           INFO     Scoring https://www.theguardian.com/books/2018/dec/02/browse-a-bookshop-news-from-nowhere-liverpool
-2018-12-02 09:07:56,526 news_rater.py:score_articles:71           INFO     Scoring https://finance.yahoo.com/video/best-week-stocks-two-years-222500002.html?.tsrc=rss
-2018-12-02 09:08:00,246 news_rater.py:score_articles:71           INFO     Scoring https://query.nytimes.com/gst/abstract.html?res=9804E2DD1F3EE63BBC4B52DFB0668389669EDE
-2018-12-02 09:08:02,590 news_rater.py:score_articles:71           INFO     Scoring https://www.theguardian.com/uk-news/2018/dec/02/met-police-numbers-will-fall-dramatically-without-new-funds-sadiq-khan
-2018-12-02 09:08:02,786 news_rater.py:score_articles:71           INFO     Scoring http://articlefeeds.nasdaq.com/~r/nasdaq/symbols/~3/-fxEoHs9Q4Q/3-incredibly-cheap-semiconductor-stocks-cm1063044
-2018-12-02 09:08:02,835 news_rater.py:score_articles:71           INFO     Scoring https://api.iextrading.com/1.0/stock/nvda/article/7956677110218858
-2018-12-02 09:08:03,002 news_rater.py:score_articles:71           INFO     Scoring https://finance.yahoo.com/news/drop-semiconductor-stocks-bad-omen-214713506.html?.tsrc=rss
-2018-12-02 09:08:05,768 news_rater.py:score_articles:71           INFO     Scoring https://query.nytimes.com/gst/abstract.html?res=9A0DE4DD1230E03ABC4F52DFBE66838D649EDE
-2018-12-02 09:08:08,058 news_rater.py:score_articles:71           INFO     Scoring https://www.theguardian.com/football/live/2018/dec/02/liverpool-v-everton-premier-league-live
-2018-12-02 09:08:08,831 news_rater.py:score_articles:71           INFO     Scoring https://api.iextrading.com/1.0/stock/nvda/article/5327556840436715
-2018-12-02 09:08:09,225 news_rater.py:score_articles:71           INFO     Scoring http://articlefeeds.nasdaq.com/~r/nasdaq/symbols/~3/A4tIGwiEfrw/new-strong-sell-stocks-for-november-21st-revised-cm1062795
-2018-12-02 09:08:09,829 news_rater.py:score_articles:71           INFO     Scoring https://finance.yahoo.com/m/b04b334c-6a5a-3eaf-9f03-2aa9a615cddc/is-amd-stock-a-great-buy.html?.tsrc=rss
-2018-12-02 09:08:11,321 news_rater.py:score_articles:71           INFO     Scoring https://query.nytimes.com/gst/abstract.html?res=9401E6DB143BE43BBC4951DFB3668389669EDE
-2018-12-02 09:08:13,950 news_rater.py:score_articles:71           INFO     Scoring https://www.theguardian.com/lifeandstyle/shortcuts/2018/dec/02/kids-always-want-to-stay-up-late-but-whats-the-optimum-time-for-them-and-you-to-go-to-bed
-2018-12-02 09:08:15,296 news_rater.py:score_articles:71           INFO     Scoring http://articlefeeds.nasdaq.com/~r/nasdaq/symbols/~3/MUtTLqCmGbY/the-5-best-stocks-to-invest-in-self-driving-cars-cm1062751
-2018-12-02 09:08:15,296 news_rater.py:score_articles:71           INFO     Scoring http://articlefeeds.nasdaq.com/~r/nasdaq/symbols/~3/OAvXKxecmxQ/nvidia-upgrades-its-dividend-and-buyback-cm1062700
-2018-12-02 09:08:15,296 news_rater.py:score_articles:71           INFO     Scoring http://articlefeeds.nasdaq.com/~r/nasdaq/symbols/~3/7Wuf4QkJK-c/10-stocks-to-buy-for-a-rate-hike-slowdown-cm1062634
-2018-12-02 09:08:15,297 news_rater.py:score_articles:71           INFO     Scoring http://articlefeeds.nasdaq.com/~r/nasdaq/symbols/~3/3DSynG--kF4/was-nvda-stocks-50-plummet-deserved-cm1062602
-2018-12-02 09:08:15,297 news_rater.py:score_articles:71           INFO     Scoring http://articlefeeds.nasdaq.com/~r/nasdaq/symbols/~3/dzPJUO2ZXgM/zacks-earnings-trends-highlights-nvidia-amazon-alphabet-and-facebook-cm1062246
-2018-12-02 09:08:15,297 news_rater.py:score_articles:71           INFO     Scoring http://articlefeeds.nasdaq.com/~r/nasdaq/symbols/~3/cjWscuk3brk/zacks-market-edge-highlights-nvidia-facebook-microsoft-planet-fitness-and-etsy-cm1062195
-2018-12-02 09:08:15,297 news_rater.py:score_articles:71           INFO     Scoring http://articlefeeds.nasdaq.com/~r/nasdaq/symbols/~3/QvWPIlJYhkM/it-took-a-week-for-nvidia-to-go-from-high-flying-growth-to-value-is-it-a-buy-cm1062047
-2018-12-02 09:08:15,297 news_rater.py:score_articles:71           INFO     Scoring http://articlefeeds.nasdaq.com/~r/nasdaq/symbols/~3/Ffc78l6QDhs/5-stocks-to-buy-for-december-cm1062034
-2018-12-02 09:08:15,298 news_rater.py:score_articles:71           INFO     Scoring http://articlefeeds.nasdaq.com/~r/nasdaq/symbols/~3/OOZLDtPPm9E/dont-miss-this-chance-to-buy-into-the-nvda-stock-weakness-cm1061850
-2018-12-02 09:08:15,298 news_rater.py:score_articles:71           INFO     Scoring http://articlefeeds.nasdaq.com/~r/nasdaq/symbols/~3/Bej5kG6rBq8/lessons-from-growth-stock-manias-cm1061752
-2018-12-02 09:08:16,529 news_rater.py:score_articles:71           INFO     Scoring https://finance.yahoo.com/news/3-incredibly-cheap-semiconductor-stocks-160200870.html?.tsrc=rss
-2018-12-02 09:08:16,918 news_rater.py:score_articles:71           INFO     Scoring https://query.nytimes.com/gst/abstract.html?res=9E03E4DD1230E03ABC4F52DFBE66838D649EDE
-2018-12-02 09:08:19,364 news_rater.py:score_articles:71           INFO     Scoring https://www.theguardian.com/books/2018/dec/02/in-brief-book-reviews-eternal-boy-childhood-broadsword-calling-danny-boy
-2018-12-02 09:08:21,470 news_rater.py:score_articles:71           INFO     Scoring http://articlefeeds.nasdaq.com/~r/nasdaq/symbols/~3/S-URJh3xOcc/nvidia-corporation-nvda-ex-dividend-date-scheduled-for-november-29-2018-cm1061499
-2018-12-02 09:08:21,470 news_rater.py:score_articles:71           INFO     Scoring http://articlefeeds.nasdaq.com/~r/nasdaq/symbols/~3/RWXhfw1WcD8/asian-shares-mixed-on-trade-concerns-20181119-00091
-2018-12-02 09:08:22,510 news_rater.py:score_articles:71           INFO     Scoring https://query.nytimes.com/gst/abstract.html?res=940CE0D61E3EE63BBC4B51DFB3668389669EDE
-2018-12-02 09:08:23,110 news_rater.py:score_articles:71           INFO     Scoring https://finance.yahoo.com/m/3da3dc5a-468f-38d1-8ea4-2c0f4e6bcbc9/volvo-ceo-in-sunnyvale-visit.html?.tsrc=rss
-2018-12-02 09:08:24,940 news_rater.py:score_articles:71           INFO     Scoring https://www.theguardian.com/media/commentisfree/2018/dec/02/all-change-at-the-daily-mail-as-mark-carney-escapes-a-bashing
-2018-12-02 09:08:27,344 news_rater.py:score_articles:71           INFO     Scoring http://articlefeeds.nasdaq.com/~r/nasdaq/symbols/~3/nCDRRshgYbo/nvidia-remains-firmly-negative-after-gapping-open-sharply-lower-20181116-00643
-2018-12-02 09:08:28,110 news_rater.py:score_articles:71           INFO     Scoring https://query.nytimes.com/gst/abstract.html?res=980CE7D91F3AE433A25757C0A9649C946894D6CF
-2018-12-02 09:08:29,559 news_rater.py:score_articles:71           INFO     Scoring https://finance.yahoo.com/m/e8d76416-fadf-3d11-be7c-3fe557b19bdb/what%E2%80%99s-in-store-for-amd%E2%80%99s.html?.tsrc=rss
-2018-12-02 09:08:30,504 news_rater.py:score_articles:71           INFO     Scoring https://www.theguardian.com/us-news/2018/dec/02/air-force-one-george-hw-bush-washington-trump
-2018-12-02 09:08:33,370 news_rater.py:score_articles:71           INFO     Scoring http://articlefeeds.nasdaq.com/~r/nasdaq/symbols/~3/Xbe68wk_hrs/nvidia-corp-nvda-has-tumbled-to-a-new-low-on-weak-guidance-20181116-00465
-2018-12-02 09:08:33,649 news_rater.py:score_articles:71           INFO     Scoring https://dinersjournal.blogs.nytimes.com/2012/02/08/what-were-reading-368/
-2018-12-02 09:08:35,926 news_rater.py:score_articles:71           INFO     Scoring https://finance.yahoo.com/m/828ea0fc-110e-3606-84bb-92c4dc1e750b/2018-%E2%80%93-an-inflection-point.html?.tsrc=rss
-2018-12-02 09:08:36,164 news_rater.py:score_articles:71           INFO     Scoring https://www.theguardian.com/football/2018/dec/02/jose-mourinho-manchester-united-southampton
-2018-12-02 09:08:38,986 news_rater.py:score_articles:71           INFO     Scoring https://www.nytimes.com/1994/03/20/magazine/l-who-s-afraid-of-lani-guinier-503096.html
-2018-12-02 09:08:39,420 news_rater.py:score_articles:71           INFO     Scoring http://articlefeeds.nasdaq.com/~r/nasdaq/symbols/~3/dcAXZQTeJUk/european-shares-likely-to-open-mixed-as-pound-plunges-20181116-00022
-2018-12-02 09:08:41,742 news_rater.py:score_articles:71           INFO     Scoring https://www.theguardian.com/football/live/2018/dec/02/arsenal-v-tottenham-premier-league-live
-2018-12-02 09:08:44,247 news_rater.py:score_articles:71           INFO     Scoring https://query.nytimes.com/gst/abstract.html?res=9904E0D9103DEE3ABC4A51DFB566838D639EDE
-2018-12-02 09:08:45,358 news_rater.py:score_articles:71           INFO     Scoring http://articlefeeds.nasdaq.com/~r/nasdaq/symbols/~3/I_c5CNA-DDs/nvidia-q3-revenue-miss-outlook-weak-shares-down-16-20181115-01382
-2018-12-02 09:08:47,771 news_rater.py:score_articles:71           INFO     Scoring https://www.theguardian.com/society/2018/dec/02/nhs-to-introduce-mental-health-checks-for-new-fathers
-2018-12-02 09:08:49,811 news_rater.py:score_articles:71           INFO     Scoring https://green.blogs.nytimes.com/2012/02/08/on-our-radar-a-subglacial-lake/
-2018-12-02 09:08:51,132 news_rater.py:score_articles:71           INFO     Scoring http://articlefeeds.nasdaq.com/~r/nasdaq/symbols/~3/xOoE3HiNdyc/nvidia-corporation-q3-adjusted-earnings-beat-estimates-20181115-01357
-2018-12-02 09:08:53,347 news_rater.py:score_articles:71           INFO     Scoring https://www.theguardian.com/books/2018/dec/02/browse-a-bookshop-news-from-nowhere-liverpool
-2018-12-02 09:08:55,084 news_rater.py:score_articles:71           INFO     Scoring https://query.nytimes.com/gst/abstract.html?res=9804E2DD1F3EE63BBC4B52DFB0668389669EDE
-2018-12-02 09:08:58,989 news_rater.py:score_articles:71           INFO     Scoring https://www.theguardian.com/uk-news/2018/dec/02/met-police-numbers-will-fall-dramatically-without-new-funds-sadiq-khan
-2018-12-02 09:09:00,682 news_rater.py:score_articles:71           INFO     Scoring https://query.nytimes.com/gst/abstract.html?res=9A0DE4DD1230E03ABC4F52DFBE66838D649EDE
-2018-12-02 09:09:04,659 news_rater.py:score_articles:71           INFO     Scoring https://www.theguardian.com/football/live/2018/dec/02/liverpool-v-everton-premier-league-live
-2018-12-02 09:09:06,278 news_rater.py:score_articles:71           INFO     Scoring https://query.nytimes.com/gst/abstract.html?res=9401E6DB143BE43BBC4951DFB3668389669EDE
-2018-12-02 09:09:10,322 news_rater.py:score_articles:71           INFO     Scoring https://www.theguardian.com/lifeandstyle/shortcuts/2018/dec/02/kids-always-want-to-stay-up-late-but-whats-the-optimum-time-for-them-and-you-to-go-to-bed
-2018-12-02 09:09:11,880 news_rater.py:score_articles:71           INFO     Scoring https://query.nytimes.com/gst/abstract.html?res=9E03E4DD1230E03ABC4F52DFBE66838D649EDE
-2018-12-02 09:09:15,863 news_rater.py:score_articles:71           INFO     Scoring https://www.theguardian.com/books/2018/dec/02/in-brief-book-reviews-eternal-boy-childhood-broadsword-calling-danny-boy
-2018-12-02 09:09:17,503 news_rater.py:score_articles:71           INFO     Scoring https://query.nytimes.com/gst/abstract.html?res=940CE0D61E3EE63BBC4B51DFB3668389669EDE
-2018-12-02 09:09:21,420 news_rater.py:score_articles:71           INFO     Scoring https://www.theguardian.com/media/commentisfree/2018/dec/02/all-change-at-the-daily-mail-as-mark-carney-escapes-a-bashing
-2018-12-02 09:09:23,086 news_rater.py:score_articles:71           INFO     Scoring https://query.nytimes.com/gst/abstract.html?res=980CE7D91F3AE433A25757C0A9649C946894D6CF
-2018-12-02 09:09:28,161 news_rater.py:score_articles:71           INFO     Scoring https://www.theguardian.com/us-news/2018/dec/02/air-force-one-george-hw-bush-washington-trump
-2018-12-02 09:09:28,546 news_rater.py:score_articles:71           INFO     Scoring https://dinersjournal.blogs.nytimes.com/2012/02/08/what-were-reading-368/
-2018-12-02 09:09:33,686 news_rater.py:score_articles:71           INFO     Scoring https://www.theguardian.com/football/2018/dec/02/jose-mourinho-manchester-united-southampton
-2018-12-02 09:09:33,890 news_rater.py:score_articles:71           INFO     Scoring https://www.nytimes.com/1994/03/20/magazine/l-who-s-afraid-of-lani-guinier-503096.html
-2018-12-02 09:09:39,401 histogram_generator.py:generate_histogram_for_stock:19           INFO     Generating histogram for NVDA
+2018-12-03 07:14:44,699 data_sources.py:__init__:34           INFO     Loaded NewsSource: articlefeeds.nasdaq.com
+2018-12-03 07:14:44,699 data_sources.py:__init__:34           INFO     Loaded NewsSource: www.zacks.com
+2018-12-03 07:14:44,699 data_sources.py:__init__:34           INFO     Loaded NewsSource: api.nytimes.com
+2018-12-03 07:14:44,699 data_sources.py:__init__:34           INFO     Loaded NewsSource: content.guardianapis.com
+2018-12-03 07:14:44,699 data_sources.py:__init__:34           INFO     Loaded NewsSource: api.iextrading.com
+2018-12-03 07:14:44,700 data_sources.py:__init__:34           INFO     Loaded NewsSource: swingtradebot.com
+2018-12-03 07:14:44,700 news_collector.py:__init__:15           INFO     StockNewsCollector Loaded.
+2018-12-03 07:14:44,715 news_rater.py:__init__:25           INFO     StockNewsRater Loaded.
+2018-12-03 07:14:44,715 data_sources.py:__init__:46           INFO     Loaded RatingSource: www.zacks.com
+2018-12-03 07:14:44,715 stock_rater.py:__init__:16           INFO     StockRater Loaded.
+2018-12-03 07:14:44,715 stock_news_analyzer.py:__init__:36           INFO     StockNewsAnalzer Loaded.
+2018-12-03 07:14:44,718 stock_news_analyzer.py:analyze_stock:54           INFO     Rating NVDA

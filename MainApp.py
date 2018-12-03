@@ -1,11 +1,9 @@
-import logging
 import sys
-import time
-from logging.config import fileConfig
 from service.histogram_generator import HistogramGenerator
 from service.stock_news_analyzer import StockNewsAnalyzer
 from service.models import Stock
 from service.stock_recommender import StockRecommender
+from service.histogram_generator import HistogramGenerator
 
 if __name__ == '__main__':
 
@@ -16,9 +14,16 @@ if __name__ == '__main__':
     stock_ticker = 'NVDA'
     
     # Testing
-    StockNewsAnalyzer().analyze_stock(stock_ticker=stock_ticker)
+    # report = StockNewsAnalyzer().analyze_stock(stock_ticker=stock_ticker)
+
+    # print(report)
 
 
     # Recommend stocks
 
     # recommended_stocks = StockRecommender().recommend_stocks()
+
+
+    # Generate Histogram for stock
+
+    # HistogramGenerator().generate_histogram_for_stock(stock_ticker) # Also takes a stock object

@@ -3,16 +3,23 @@ import time
 import logging
 from logging.config import fileConfig
 from datetime import datetime, date
-from service.news_collector import NewsCollector
-from service.news_rater import NewsRater
-from service.models import *
-from service.histogram_generator import HistogramGenerator
 from peewee import IntegrityError
 import requests
 import html
+from service.news_collector import NewsCollector
+from service.news_rater import NewsRater
 from service.stock_rater import StockRater
+from service.models import *
 
 class StockNewsAnalyzer(object):
+
+    RATING = 'rating'
+
+    AVG_BODY = 'avg_body'
+
+    AVG_HEADLINE = 'avg_headline'
+
+    AVG_HEADLINE_BODY_COMBO = 'avg_headline_body_combo'
 
     def __init__(self):
 
@@ -22,21 +29,15 @@ class StockNewsAnalyzer(object):
 
         self.news_rater = NewsRater()
 
-        self.histogram_generator = HistogramGenerator()
-
         self.stock_rater = StockRater()
 
         self.logger = logging.getLogger()
 
         self.logger.info('StockNewsAnalzer Loaded.')
 
-    def analyze_stock(self,stock_ticker=None, target_stock=None):
+    def analyze_stock(self,stock_ticker):
 
-        if stock_ticker is None and target_stock is None: raise Exception('Please provide either a Stock or Stock Ticker.')
-
-        if stock_ticker is not None and target_stock is not None: raise Exception('Please provide only a Stock or a Stock Ticker, not both.')
-
-        stock = target_stock if target_stock is not None else Stock.get_or_none(ticker=stock_ticker)
+        stock = Stock.get_or_none(ticker=stock_ticker)
 
         if stock is None:
 
@@ -56,7 +57,9 @@ class StockNewsAnalyzer(object):
 
         self.news_rater.rate_news(articles,stock)
 
-        self.histogram_generator.generate_histogram_for_stock(stock)
+        self.stock_rater.rate_stock(stock)
+
+        return self.__generate_report(stock)
 
     def __gather_stock_data(self,stock_ticker):
 
@@ -79,3 +82,29 @@ class StockNewsAnalyzer(object):
             self.logger.error(e)
 
         return name, market
+
+    def __generate_report(self,stock):
+
+        content_type_headline = ContentType.get(type='headline')
+
+        content_type_body = ContentType.get(type='body')
+
+        report_data = {}
+
+        rating = Rating.select(fn.AVG(Rating.value)).join(StockRating, JOIN.INNER).where((StockRating.stock_ticker == stock) & (Rating.rating_date == date.today().strftime('%Y-%m-%d'))).scalar()
+
+        avg_headline = Score.select(fn.AVG(Score.value)).join(ContentScore, JOIN.INNER).join(Content, JOIN.INNER).join(ArticleContent, JOIN.INNER).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((Content.content_type == content_type_headline) & (StockArticle.stock_ticker == stock) & (Article.save_date == date.today().strftime('%Y-%m-%d'))).scalar()
+        
+        avg_body = Score.select(fn.AVG(Score.value)).join(ContentScore, JOIN.INNER).join(Content, JOIN.INNER).join(ArticleContent, JOIN.INNER).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((Content.content_type == content_type_body) & (StockArticle.stock_ticker == stock) & (Article.save_date == date.today().strftime('%Y-%m-%d'))).scalar()
+
+        avg_headline_body_combo = (avg_headline + avg_body) / 2
+
+        report_data[self.RATING] = rating
+
+        report_data[self.AVG_BODY] = avg_body
+
+        report_data[self.AVG_HEADLINE] = avg_headline
+
+        report_data[self.AVG_HEADLINE_BODY_COMBO] = avg_headline_body_combo
+
+        return report_data

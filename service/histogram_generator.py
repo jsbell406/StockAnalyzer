@@ -1,57 +1,57 @@
 import logging
+from logging.config import fileConfig
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import colors
 from matplotlib.ticker import PercentFormatter
 from datetime import date
-from service.models import *
+from peewee import JOIN
+from service.models import Stock, ContentType, Score, ContentScore, Content, ArticleContent, Article, StockArticle
 
 class HistogramGenerator(object):
 
     def __init__(self):
 
+        fileConfig('logging_config.ini')
+
         self.logger = logging.getLogger()
 
         self.logger.info('HistogramGenerator Loaded.')
 
-    def generate_histogram_for_stock(self,stock):
+    def generate_histogram_for_stock(self,stock_ticker):
 
-        self.logger.info('Generating histogram for ' + stock.ticker)
+        stock = Stock.get_or_none(ticker=stock_ticker)
 
-        content_type_headline = ContentType.get(type='headline')
+        if stock is not None:
 
-        content_type_body = ContentType.get(type='body')
+            self.logger.info('Generating histogram for ' + stock.ticker)
 
-        raw_headline_scores = Score.select().join(ContentScore, JOIN.INNER).join(Content, JOIN.INNER).join(ArticleContent, JOIN.INNER).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((Content.content_type == content_type_headline) & (StockArticle.stock_ticker == stock) & (Article.save_date == date.today().strftime('%Y-%m-%d')) & (Score.value != 0))
+            content_type_headline = ContentType.get(type='headline')
 
-        raw_body_scores = Score.select().join(ContentScore, JOIN.INNER).join(Content, JOIN.INNER).join(ArticleContent, JOIN.INNER).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((Content.content_type == content_type_body) & (StockArticle.stock_ticker == stock) & (Article.save_date == date.today().strftime('%Y-%m-%d')) & (Score.value != 0))
+            content_type_body = ContentType.get(type='body')
 
-        headline_scores = [raw_headline_score.value for raw_headline_score in raw_headline_scores]
+            headline_scores = [score.value for score in Score.select().join(ContentScore, JOIN.INNER).join(Content, JOIN.INNER).join(ArticleContent, JOIN.INNER).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((Content.content_type == content_type_headline) & (StockArticle.stock_ticker == stock) & (Article.save_date == date.today().strftime('%Y-%m-%d')))]
 
-        body_scores = [raw_body_score.value for raw_body_score in raw_body_scores]
+            body_scores = [score.value for score in Score.select().join(ContentScore, JOIN.INNER).join(Content, JOIN.INNER).join(ArticleContent, JOIN.INNER).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((Content.content_type == content_type_body) & (StockArticle.stock_ticker == stock) & (Article.save_date == date.today().strftime('%Y-%m-%d')))]
 
-        headline_body_scores = headline_scores + body_scores
+            headline_body_scores = headline_scores + body_scores
 
-        fig, axs = plt.subplots(1, 3, sharey=True, tight_layout=True)
+            fig, axs = plt.subplots(1, 3, sharey=True, tight_layout=True)
 
-        self.__create_subplot(axs,0,headline_scores,'Headline Scores')
+            self.__create_subplot(axs,0,headline_scores,'Headline Scores ({})'.format(len(headline_scores)))
 
-        self.__create_subplot(axs,1,headline_body_scores,'Headline & Body Scores')
+            self.__create_subplot(axs,1,headline_body_scores,'Headline & Body Scores ({})'.format(len(headline_body_scores)))
 
-        self.__create_subplot(axs,2,body_scores,'Body Scores')
+            self.__create_subplot(axs,2,body_scores,'Body Scores ({})'.format(len(body_scores)))
 
-        fig.canvas.set_window_title(stock.ticker)
+            fig.canvas.set_window_title(stock.ticker)
 
-        plt.show()    
+            plt.show()    
 
     def __create_subplot(self,axs,index,dataset,title):
 
-        axs[index].hist(dataset, bins=20)
+        axs[index].hist(dataset, bins=10)
 
         axs[index].set_xlim([-1,1])
 
         axs[index].set_title(title)
-
-    def show_plt(self,plt):
-
-        plt.show()
