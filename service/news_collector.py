@@ -1,14 +1,14 @@
 import logging
 from multiprocessing.pool import ThreadPool
 import time
-from service.news_sources import Nasdaq, Zacks, NYT, TheGuardian, IEX, SwingTradeBot
+from service.news_sources import Nasdaq, TheStreet, DailyStocks, IEX, RobinHood, NewsApi
 from service.models import Stock, Article
 
 class NewsCollector(object):
 
     def __init__(self):
 
-        self.news_sources = [Nasdaq(),Zacks(), NYT(), TheGuardian(), IEX(), SwingTradeBot()]
+        self.news_sources = [Nasdaq(), TheStreet(), DailyStocks(), IEX(), RobinHood(), NewsApi()]
 
         self.logger = logging.getLogger()
 
@@ -26,18 +26,8 @@ class NewsCollector(object):
 
         for news_source in self.news_sources: workers.append(thread_pool.apply_async(news_source.collect_data_from_source_for_stock,(stock,)))
 
-        for worker in workers:
-
-            for article in worker.get(): articles.append(article)
+        for worker in workers: articles += worker.get()
 
         self.__review_articles(articles)
 
         return articles
-
-    def __review_articles(self,articles):
-
-        for index, article in enumerate(articles):
-
-            existing_article = Article.get_or_none(url=article.url)
-
-            articles[index] = existing_article if existing_article is not None else article

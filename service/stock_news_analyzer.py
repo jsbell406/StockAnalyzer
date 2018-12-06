@@ -15,11 +15,7 @@ class StockNewsAnalyzer(object):
 
     RATING = 'rating'
 
-    AVG_BODY = 'avg_body'
-
-    AVG_HEADLINE = 'avg_headline'
-
-    AVG_HEADLINE_BODY_COMBO = 'avg_headline_body_combo'
+    AVG_SCORE = 'avg_score'
 
     def __init__(self):
 
@@ -85,17 +81,11 @@ class StockNewsAnalyzer(object):
 
     def __generate_report(self,stock):
 
-        content_type_headline = ContentType.get(type='headline')
-
-        content_type_body = ContentType.get(type='body')
-
         report_data = {}
 
         rating = Rating.select(fn.AVG(Rating.value)).join(StockRating, JOIN.INNER).where((StockRating.stock_ticker == stock) & (Rating.rating_date == date.today().strftime('%Y-%m-%d'))).scalar()
 
-        avg_headline = Score.select(fn.AVG(Score.value)).join(ContentScore, JOIN.INNER).join(Content, JOIN.INNER).join(ArticleContent, JOIN.INNER).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((Content.content_type == content_type_headline) & (StockArticle.stock_ticker == stock) & (Article.save_date == date.today().strftime('%Y-%m-%d'))).scalar()
-        
-        avg_body = Score.select(fn.AVG(Score.value)).join(ContentScore, JOIN.INNER).join(Content, JOIN.INNER).join(ArticleContent, JOIN.INNER).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((Content.content_type == content_type_body) & (StockArticle.stock_ticker == stock) & (Article.save_date == date.today().strftime('%Y-%m-%d'))).scalar()
+        avg_score = ArticleScore.select(fn.AVG(ArticleScore.score)).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where(Article.save_date == date.today().strftime('%Y-%m-%d')).scalar()
 
         avg_headline_body_combo = (avg_headline + avg_body) / 2
 

@@ -1,7 +1,7 @@
 import feedparser
 import logging
 import requests
-from datetime import date, timedelta
+from datetime import datetime, date, timedelta
 import time
 import re
 from service.models import Article
@@ -27,13 +27,17 @@ class NewsSourceRss(NewsSource):
 
                 article_url = entry.link
 
+                article_title = entry.title
+
+                article_summary = entry.description
+
                 publish_date_tuple = entry.published_parsed
 
                 pub_date = '-'.join([str(x) for x in publish_date_tuple[0:3]])
 
                 saved_article = Article.get_or_none(url=article_url)
 
-                articles.append(saved_article if saved_article is not None else Article(url=article_url,publish_date=pub_date))
+                articles.append(Article(url=article_url,publish_date=pub_date,title=article_title,summary=article_summary))
 
         except Exception as e: self.logger.error(e)
 
@@ -57,15 +61,33 @@ class NewsSourceRegex(NewsSource):
 
         try:
 
-            response = requests.get(self.construct_url(stock))
+            headers = {'User-Agent':'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:63.0) Gecko/20100101 Firefox/63.0'}
+
+            response = requests.get(self.construct_url(stock),headers = headers)
 
             response_text = response.text
 
-            for article_url in re.findall(self.collection_regex,response_text): articles.append(Article(url=article_url))
+            for match in re.search(self.collection_regex,response): articles.append(self.build_article_from_match(match))
 
         except Exception as e: self.logger.error(e)
 
         return articles
+
+    def build_article_from_match(self,match):
+
+        article_url = match.group(1).strip()
+
+        article_title = match.group(2).strip()
+
+        article_summary = match.group(3).strip()
+
+        article_pub_date = self.parse_pub_date(match.group(4).strip())
+
+        return Article(title=article_title,summary=article_summary,publish_date=article_pub_date,url=article_url)
+
+    def parse_pub_date(self,raw_pub_date):
+
+        pass
 
 # ==================================================
 
@@ -103,7 +125,7 @@ class NewsSourceJSON(NewsSource):
 
         return articles
 
-    def construct_headers(self,stock_param):
+    def construct_headers(self):
 
         pass
 
@@ -127,100 +149,39 @@ class Nasdaq(NewsSourceRss):
 
 ## Regex
 
-class Zacks(NewsSourceRegex):
+class TheStreet(NewsSourceRegex):
 
     def __init__(self):
 
-        super().__init__('https://www.zacks.com/data_handler/stocks/stock_quote_news.php?provider=others&cat={}&limit=30&record=1',r'href=".*?\/\/(.+?)"')
+        super().__init__('https://www.thestreet.com/quote/{}/details/news',r'<div class="news-list-compact__item"[\s\S]+?href="(.+?)"[\s\S]+?class="news-list-compact__headline ">(.+?)<[\s\S]+?<p class="news-list-compact__callout">(.+?)<[\s\S]+?<time datetime="(.+?)"')
 
-class SwingTradeBot(NewsSourceRegex):
+    def parse_pub_date(self,raw_pub_date):
+
+        return raw_pub_date.split('T')[0]
+
+class DailyStocks(NewsSourceRegex):
 
     def __init__(self):
 
-        super().__init__('https://swingtradebot.com/equities/{}',r'<td><a target="_blank" rel="noopener" href="(.+?)"')
+        super().__init__('http://search.dailystocks.com/?q={}',r'<div class="clear leftFloat result">[\s\S]+?href="(.+?)".+?> (.+?) <[\s\S]+?<span class="pubDate">(.+?) - </span>(.+?)</span>')
+
+    def build_article_from_match(self,match):
+
+        article_url = match.group(1).strip()
+
+        article_title = match.group(2).strip()
+
+        article_pub_date = self.parse_pub_date(match.group(3).strip())
+
+        article_summary = match.group(4).strip()
+
+        return Article(title=article_title,summary=article_summary,publish_date=article_pub_date,url=article_url)
+
+    def parse_pub_date(self,raw_pub_date):
+
+        return datetime.striptime(raw_pub_date,'%b %d, %Y').strftime('%Y-%m-%d')
 
 ## Json
-
-class NYT(NewsSourceJSON):
-
-    def __init__(self):
-
-        super().__init__('https://api.nytimes.com/svc/search/v2/articlesearch.json','f8ed562261ea48a1871e9988f957a9c8')
-
-    def construct_headers(self,stock_param):
-
-          headers = {}
-
-          headers['api-key'] = self.api_key
-
-          headers['q'] = stock_param
-
-          headers['begin_date'] = (date.today() - timedelta(days=10)).strftime('%Y%m%d')
-
-          headers['sort'] = 'newest'
-
-          headers['fl'] = 'web_url,pub_date'
-
-          return headers
-
-    def convert_json_to_articles(self,response_json):
-
-        articles = []
-
-        try:
-
-            for article_data in response_json['response']['docs']: 
-
-                article_url = article_data['web_url']
-                
-                pub_date = article_data['pub_date']
-
-                articles.append(Article(url=article_url,publish_date=pub_date))
-
-        except Exception as e: self.logger.error(e)
-
-        return articles
-
-
-class TheGuardian(NewsSourceJSON):
-
-    def __init__(self):
-
-        super().__init__('https://content.guardianapis.com/search','233d61f8-ed2a-400d-ac40-7e5424e07cf6')
-
-    def construct_headers(self,stock_param):
-
-          headers = {}
-
-          headers['section'] = 'business'
-
-          headers['from-date'] = (date.today() - timedelta(days=10)).strftime('%Y%m%d')
-
-          headers['order-by'] = 'newest'
-
-          headers['q'] = stock_param
-
-          headers['api-key'] = self.api_key
-
-          return headers
-
-    def convert_json_to_articles(self,response_json):
-
-        articles = []
-
-        try:
-
-            for article_data in response_json['response']['results']: 
-
-                article_url = article_data['webUrl']
-                
-                pub_date = article_data['webPublicationDate']
-
-                articles.append(Article(url=article_url,publish_date=pub_date))
-
-        except Exception as e: self.logger.error(e)
-
-        return articles
 
 
 class IEX(NewsSourceJSON):
@@ -229,7 +190,7 @@ class IEX(NewsSourceJSON):
 
         super().__init__('https://api.iextrading.com/1.0/stock/{}/news')
 
-    def construct_headers(self,stock_param):
+    def construct_headers(self):
 
         return None
 
@@ -243,9 +204,77 @@ class IEX(NewsSourceJSON):
 
                 article_url = article_data['url']
                 
-                pub_date = article_data['datetime']
+                pub_date = article_data['datetime'].split('T')[0]
 
-                articles.append(Article(url=article_url,publish_date=pub_date))
+                article_title = article_data['headline']
+
+                article_summary = article_data['summary']
+
+                articles.append(Article(url=article_url,publish_date=pub_date,title=article_title,summary=article_summary))
+
+        except Exception as e: self.logger.error(e)
+
+        return articles
+
+class RobinHood(NewsSourceJSON):
+
+    def __init__(self):
+
+        super().__init__('https://midlands.robinhood.com/news/{}/')
+
+    def construct_headers(self,stock_param):
+
+        return None
+
+    def convert_json_to_articles(self,response_json):
+
+        articles = []
+
+        try:
+
+            for article_data in response_json['results']: 
+
+                article_url = article_data['url']
+                
+                pub_date = article_data['published_at'].split('T')[0]
+
+                article_title = article_data['title']
+
+                article_summary = article_data['summary']
+
+                articles.append(Article(url=article_url,publish_date=pub_date,title=article_title,summary=article_summary))
+
+        except Exception as e: self.logger.error(e)
+
+        return articles
+
+class NewsApi(NewsSourceJSON):
+
+    def __init__(self):
+
+        super().__init__('https://newsapi.org/v2/everything?q={}&sources=bloomberg,business-insider,cnbc,fortune,the-wall-street-journal&sortBy=publishedAt')
+
+    def construct_headers(self,stock_param):
+
+        return {'apiKey':'ac38010a4adf48169ac1d2493a433a29'}
+
+    def convert_json_to_articles(self,response_json):
+
+        articles = []
+
+        try:
+
+            for article_data in response_json['articles']: 
+
+                article_url = article_data['url']
+                
+                pub_date = article_data['publishedAt'].split('T')[0]
+
+                article_title = article_data['title']
+
+                article_summary = article_data['description']
+
+                articles.append(Article(url=article_url,publish_date=pub_date,title=article_title,summary=article_summary))
 
         except Exception as e: self.logger.error(e)
 

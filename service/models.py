@@ -12,63 +12,28 @@ class BaseModel(Model):
 class Article(BaseModel):
     publish_date = TextField(null=True)
     save_date = TextField(null=True)
+    summary = TextField(null=True)
+    title = TextField(null=True)
     url = TextField()
 
     class Meta:
         table_name = 'Article'
 
-class Content(BaseModel):
-    content_type = IntegerField()
-    text = TextField()
+class ArticleScore(BaseModel):
+    article = ForeignKeyField(column_name='article_id', field='id', model=Article)
+    score = FloatField()
+    scored_content = TextField()
 
     class Meta:
-        table_name = 'Content'
-
-class ArticleContent(BaseModel):
-    article = ForeignKeyField(column_name='article', field='id', model=Article)
-    content = ForeignKeyField(column_name='content', field='id', model=Content)
-
-    class Meta:
-        table_name = 'Article_Content'
-
-class Score(BaseModel):
-    value = FloatField(null=True)
-
-    class Meta:
-        table_name = 'Score'
-
-class ContentScore(BaseModel):
-    content = ForeignKeyField(column_name='content_id', field='id', model=Content)
-    score = ForeignKeyField(column_name='score_id', field='id', model=Score)
-
-    class Meta:
-        table_name = 'Content_Score'
-
-class ContentType(BaseModel):
-    type = TextField()
-
-    class Meta:
-        table_name = 'Content_Type'
-
-class Rater(BaseModel):
-    name = TextField(null=True)
-
-    class Meta:
-        table_name = 'Rater'
+        table_name = 'Article_Score'
 
 class Rating(BaseModel):
     rating_date = TextField(null=True)
+    source = TextField(null=True)
     value = IntegerField()
 
     class Meta:
         table_name = 'Rating'
-
-class RaterRating(BaseModel):
-    rater = ForeignKeyField(column_name='rater_id', field='id', model=Rater)
-    rating = ForeignKeyField(column_name='rating_id', field='id', model=Rating)
-
-    class Meta:
-        table_name = 'Rater_Rating'
 
 class Stock(BaseModel):
     market = TextField(null=True)
