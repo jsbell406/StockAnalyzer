@@ -67,7 +67,7 @@ class NewsSourceRegex(NewsSource):
 
             response_text = response.text
 
-            for match in re.search(self.collection_regex,response): articles.append(self.build_article_from_match(match))
+            for match in re.findall(self.collection_regex,response_text): articles.append(self.build_article_from_match(match))
 
         except Exception as e: self.logger.error(e)
 
@@ -75,13 +75,13 @@ class NewsSourceRegex(NewsSource):
 
     def build_article_from_match(self,match):
 
-        article_url = match.group(1).strip()
+        article_url = match[0].strip()
 
-        article_title = match.group(2).strip()
+        article_title = match[1].strip()
 
-        article_summary = match.group(3).strip()
+        article_summary = match[2].strip()
 
-        article_pub_date = self.parse_pub_date(match.group(4).strip())
+        article_pub_date = self.parse_pub_date(match[3].strip())
 
         return Article(title=article_title,summary=article_summary,publish_date=article_pub_date,url=article_url)
 
@@ -107,27 +107,15 @@ class NewsSourceJSON(NewsSource):
 
         try:
             
-            for i in range(2):
+            response = requests.get(self.construct_url(stock))
 
-                stock_param = stock.ticker if i == 0 else stock.name
+            response_json = response.json()
 
-                headers = self.construct_headers(stock_param)
-
-                response = requests.get(self.construct_url(stock), headers=headers)
-
-                response_json = response.json()
-
-                articles += self.convert_json_to_articles(response_json)
-
-                time.sleep(5)
+            articles += self.convert_json_to_articles(response_json)
 
         except Exception as e: self.logger.error(e)
 
         return articles
-
-    def construct_headers(self):
-
-        pass
 
     def convert_json_to_articles(self,response_json):
 
@@ -167,19 +155,19 @@ class DailyStocks(NewsSourceRegex):
 
     def build_article_from_match(self,match):
 
-        article_url = match.group(1).strip()
+        article_url = match[0].strip()
 
-        article_title = match.group(2).strip()
+        article_title = match[1].strip()
 
-        article_pub_date = self.parse_pub_date(match.group(3).strip())
+        article_pub_date = self.parse_pub_date(match[2].strip())
 
-        article_summary = match.group(4).strip()
+        article_summary = match[3].strip()
 
         return Article(title=article_title,summary=article_summary,publish_date=article_pub_date,url=article_url)
 
     def parse_pub_date(self,raw_pub_date):
 
-        return datetime.striptime(raw_pub_date,'%b %d, %Y').strftime('%Y-%m-%d')
+        return datetime.strptime(raw_pub_date,'%b %d, %Y').strftime('%Y-%m-%d')
 
 ## Json
 
@@ -189,10 +177,6 @@ class IEX(NewsSourceJSON):
     def __init__(self):
 
         super().__init__('https://api.iextrading.com/1.0/stock/{}/news')
-
-    def construct_headers(self):
-
-        return None
 
     def convert_json_to_articles(self,response_json):
 
@@ -222,10 +206,6 @@ class RobinHood(NewsSourceJSON):
 
         super().__init__('https://midlands.robinhood.com/news/{}/')
 
-    def construct_headers(self,stock_param):
-
-        return None
-
     def convert_json_to_articles(self,response_json):
 
         articles = []
@@ -252,11 +232,7 @@ class NewsApi(NewsSourceJSON):
 
     def __init__(self):
 
-        super().__init__('https://newsapi.org/v2/everything?q={}&sources=bloomberg,business-insider,cnbc,fortune,the-wall-street-journal&sortBy=publishedAt')
-
-    def construct_headers(self,stock_param):
-
-        return {'apiKey':'ac38010a4adf48169ac1d2493a433a29'}
+        super().__init__('https://newsapi.org/v2/everything?q={}&sources=bloomberg,business-insider,cnbc,fortune,the-wall-street-journal&sortBy=publishedAt&apiKey=ac38010a4adf48169ac1d2493a433a29')
 
     def convert_json_to_articles(self,response_json):
 

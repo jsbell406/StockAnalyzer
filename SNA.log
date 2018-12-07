@@ -1,0 +1,2 @@
+2018-12-07 07:14:06,093 histogram_generator.py:__init__:19           INFO     HistogramGenerator Loaded.
+2018-12-07 07:14:06,096 histogram_generator.py:generate_histogram_for_stock:27           INFO     Generating histogram for NVDA

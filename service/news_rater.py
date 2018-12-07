@@ -46,7 +46,7 @@ class NewsRater(object):
 
         pub_date = datetime.strptime(article.publish_date,'%Y-%m-%d').date()
 
-        publish_date_valid = date.today() - pub_date <= 7
+        publish_date_valid = (date.today() - pub_date).days <= 7
 
         return publish_date_valid
 

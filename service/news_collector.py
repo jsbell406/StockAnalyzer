@@ -28,6 +28,4 @@ class NewsCollector(object):
 
         for worker in workers: articles += worker.get()
 
-        self.__review_articles(articles)
-
         return articles

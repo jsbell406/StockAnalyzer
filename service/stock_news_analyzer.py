@@ -33,6 +33,20 @@ class StockNewsAnalyzer(object):
 
     def analyze_stock(self,stock_ticker):
 
+        stock = self.__gather_stock_for_ticker(stock_ticker)
+
+        self.logger.info('Rating ' + stock.ticker)
+
+        articles = self.news_collector.collect_news_for_stock(stock)
+
+        self.news_rater.rate_news(articles,stock)
+
+        # self.stock_rater.rate_stock(stock)
+
+        return self.__generate_report(stock)
+
+    def __gather_stock_for_ticker(self,stock_ticker):
+
         stock = Stock.get_or_none(ticker=stock_ticker)
 
         if stock is None:
@@ -47,15 +61,7 @@ class StockNewsAnalyzer(object):
 
                 stock.save()
 
-        self.logger.info('Rating ' + stock.ticker)
-
-        articles = self.news_collector.collect_news_for_stock(stock)
-
-        self.news_rater.rate_news(articles,stock)
-
-        self.stock_rater.rate_stock(stock)
-
-        return self.__generate_report(stock)
+        return stock
 
     def __gather_stock_data(self,stock_ticker):
 
@@ -87,14 +93,8 @@ class StockNewsAnalyzer(object):
 
         avg_score = ArticleScore.select(fn.AVG(ArticleScore.score)).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where(Article.save_date == date.today().strftime('%Y-%m-%d')).scalar()
 
-        avg_headline_body_combo = (avg_headline + avg_body) / 2
-
         report_data[self.RATING] = rating
 
-        report_data[self.AVG_BODY] = avg_body
-
-        report_data[self.AVG_HEADLINE] = avg_headline
-
-        report_data[self.AVG_HEADLINE_BODY_COMBO] = avg_headline_body_combo
+        report_data[self.AVG_SCORE] = avg_score
 
         return report_data

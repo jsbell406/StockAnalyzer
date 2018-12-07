@@ -4,9 +4,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import colors
 from matplotlib.ticker import PercentFormatter
-from datetime import date
+from datetime import datetime, date, timedelta
 from peewee import JOIN
-from service.models import Stock, ContentType, Score, ContentScore, Content, ArticleContent, Article, StockArticle
+from service.models import Stock, ArticleScore, Article, StockArticle
 
 class HistogramGenerator(object):
 
@@ -26,32 +26,16 @@ class HistogramGenerator(object):
 
             self.logger.info('Generating histogram for ' + stock.ticker)
 
-            content_type_headline = ContentType.get(type='headline')
+            scores = [article_score.score for article_score in ArticleScore.select().join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((StockArticle.stock_ticker == stock_ticker) & (Article.save_date == date.today().__str__()))]
 
-            content_type_body = ContentType.get(type='body')
+            fig, axs = plt.subplots(1, sharey=True, tight_layout=True)
 
-            headline_scores = [score.value for score in Score.select().join(ContentScore, JOIN.INNER).join(Content, JOIN.INNER).join(ArticleContent, JOIN.INNER).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((Content.content_type == content_type_headline) & (StockArticle.stock_ticker == stock) & (Article.save_date == date.today().strftime('%Y-%m-%d')))]
+            axs.hist(scores, bins=10)
 
-            body_scores = [score.value for score in Score.select().join(ContentScore, JOIN.INNER).join(Content, JOIN.INNER).join(ArticleContent, JOIN.INNER).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((Content.content_type == content_type_body) & (StockArticle.stock_ticker == stock) & (Article.save_date == date.today().strftime('%Y-%m-%d')))]
+            axs.set_xlim([-1,1])
 
-            headline_body_scores = headline_scores + body_scores
-
-            fig, axs = plt.subplots(1, 3, sharey=True, tight_layout=True)
-
-            self.__create_subplot(axs,0,headline_scores,'Headline Scores ({})'.format(len(headline_scores)))
-
-            self.__create_subplot(axs,1,headline_body_scores,'Headline & Body Scores ({})'.format(len(headline_body_scores)))
-
-            self.__create_subplot(axs,2,body_scores,'Body Scores ({})'.format(len(body_scores)))
+            axs.set_title('Scores ({})'.format(len(scores)))
 
             fig.canvas.set_window_title(stock.ticker)
 
             plt.show()    
-
-    def __create_subplot(self,axs,index,dataset,title):
-
-        axs[index].hist(dataset, bins=10)
-
-        axs[index].set_xlim([-1,1])
-
-        axs[index].set_title(title)

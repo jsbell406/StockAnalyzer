@@ -19,9 +19,9 @@ if __name__ == '__main__':
     stock_ticker = 'NVDA'
     
     # Testing
-    report = StockNewsAnalyzer().analyze_stock(stock_ticker=stock_ticker)
+    # report = StockNewsAnalyzer().analyze_stock(stock_ticker=stock_ticker)
 
-    print(report)
+    # print(report)
 
 
     # Recommend stocks

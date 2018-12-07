@@ -1,7 +1,8 @@
 import logging
 import re
 import requests
-from service.models import Rater, Rating, StockRating, RaterRating
+from datetime import date
+from service.models import Rating
 
 class DataSource(object):
 
@@ -59,7 +60,7 @@ class RatingSource(DataSource):
 
         rating = self.parse_rating(rating)
 
-        if rating is not None: self.__save_rating(stock,rating)
+        if rating is not None: Rating.get_or_create(value=rating,source=self.__str__(),rating_date=date.today().__str__())
 
     def parse_rating(self,raw_rating):
 
@@ -70,25 +71,3 @@ class RatingSource(DataSource):
         elif 'Sell' in raw_rating: return -1
 
         return None
-
-    def __save_rating(self,stock,rating_value):
-
-        rater = Rater.get_or_none(name=self.__str__())
-
-        if rater is None:
-
-            rater = Rater.create(name=self.__str__())
-
-            rater.save()
-
-        rating = Rating.create(value=rating_value)
-
-        rating.save()
-
-        rater_rating = RaterRating.create(rater_id=rater,rating_id=rating)
-
-        rater_rating.save()
-
-        stock_rating = StockRating.create(stock_ticker=stock,rating_id=rating)
-
-        stock_rating.save()
