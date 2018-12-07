@@ -29,7 +29,11 @@ def on_master_branch():
 
 def get_current_branch_name():
 
-    branch_data = os.popen('git branch -av')
+    process = os.popen('git branch -av')
+
+    branch_data = process.read()
+
+    process.close()
 
     for item in branch_data.split('\n'):
 
@@ -51,7 +55,7 @@ def merge():
 
         os.system('git push --delete origin {}'.format(current_branch_name))
 
-        os.syste('git branch -d {}'.format(current_branch_name))
+        os.system('git branch -d {}'.format(current_branch_name))
 
 def print_usage():
 
@@ -64,7 +68,7 @@ def print_usage():
     print('\t3) MERGE - To merge the current branch.')
 
 if __name__ == "__main__":
-    
+
     try:
 
         arg = sys.argv[1].strip().upper()
