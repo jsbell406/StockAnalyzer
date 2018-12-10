@@ -16,10 +16,10 @@ if __name__ == '__main__':
 
     # stock_ticker = sys.argv[1]
 
-    stock_ticker = 'NVDA'
+    stock_ticker = 'AMD'
     
     # Testing
-    # report = StockNewsAnalyzer().analyze_stock(stock_ticker=stock_ticker)
+    report = StockNewsAnalyzer().analyze_stock(stock_ticker=stock_ticker)
 
     # print(report)
 
@@ -31,4 +31,4 @@ if __name__ == '__main__':
 
     # Generate Histogram for stock
 
-    HistogramGenerator().generate_histogram_for_stock(stock_ticker) # Also takes a stock object
+    # HistogramGenerator().generate_histogram_for_stock(stock_ticker) # Also takes a stock object

@@ -9,9 +9,7 @@ class StockRater(object):
 
         self.logger = logging.getLogger()
 
-        self.sources = [Zacks(),TheStreet(),StockHelpIsland(),SuperStockScreener()]
-
-        self.sources = [Zacks()]
+        self.sources = [Zacks(),TheStreet(),StockHelpIsland(),SuperStockScreener(),MarketBeat()]
 
         self.logger.info('StockRater Loaded.')
 

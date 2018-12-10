@@ -2,7 +2,7 @@ import logging
 import re
 import requests
 from datetime import date
-from service.models import Rating
+from service.models import Rating, StockRating
 
 class DataSource(object):
 
@@ -56,18 +56,34 @@ class RatingSource(DataSource):
 
         text = response.text
 
-        rating = re.findall(self.regex_string,text)[0].strip()
+        if response.status_code == 200:
 
-        rating = self.parse_rating(rating)
+            rating_data = re.findall(self.regex_string,text)
 
-        if rating is not None: Rating.get_or_create(value=rating,source=self.__str__(),rating_date=date.today().__str__())
+            if len(rating_data) > 0:
+
+                rating_value = self.parse_rating(rating_data[0].strip().upper())
+
+                print('{} : {}'.format(self.__str__(), rating_value))
+
+                if rating_value is not None: 
+
+                    existing_rating = Rating.get_or_none(value=rating_value,source=self.__str__(),rating_date=date.today().__str__())
+
+                    if existing_rating is None: 
+                        
+                        rating = Rating.create(value=rating_value,source=self.__str__(),rating_date=date.today().__str__()).save()
+
+                        StockRating.create(stock_ticker=stock,rating_id=rating).save()
+
+        else: self.logger.error('Status Code for {} was not 200: {}'.format(self.__str__(),response.status_code))
 
     def parse_rating(self,raw_rating):
 
-        if 'Buy' in raw_rating: return 1
+        if 'BUY' in raw_rating: return 1
 
-        elif 'Hold' in raw_rating or 'Neutral' in raw_rating: 0
+        elif 'HOLD' in raw_rating or 'Neutral' in raw_rating: 0
 
-        elif 'Sell' in raw_rating: return -1
+        elif 'SELL' in raw_rating: return -1
 
         return None

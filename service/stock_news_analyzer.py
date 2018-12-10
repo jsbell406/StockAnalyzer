@@ -35,13 +35,13 @@ class StockNewsAnalyzer(object):
 
         stock = self.__gather_stock_for_ticker(stock_ticker)
 
-        self.logger.info('Rating ' + stock.ticker)
+        # self.logger.info('Rating ' + stock.ticker)
 
-        articles = self.news_collector.collect_news_for_stock(stock)
+        # articles = self.news_collector.collect_news_for_stock(stock)
 
-        self.news_rater.rate_news(articles,stock)
+        # self.news_rater.rate_news(articles,stock)
 
-        # self.stock_rater.rate_stock(stock)
+        self.stock_rater.rate_stock(stock)
 
         return self.__generate_report(stock)
 

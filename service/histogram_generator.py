@@ -28,13 +28,7 @@ class HistogramGenerator(object):
 
             scores = [article_score.score for article_score in ArticleScore.select().join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((StockArticle.stock_ticker == stock_ticker) & (Article.save_date == date.today().__str__()))]
 
-            fig, axs = plt.subplots(1, sharey=True, tight_layout=True)
-
-            axs.hist(scores, bins=10)
-
-            axs.set_xlim([-1,1])
-
-            axs.set_title('Scores ({})'.format(len(scores)))
+            plt.hist(scores, bins=10, range=(-1,1),label='Scores ({})'.format(len(scores)))
 
             fig.canvas.set_window_title(stock.ticker)
 
