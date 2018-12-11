@@ -13,7 +13,7 @@ from service.models import *
 
 class StockNewsAnalyzer(object):
 
-    RATING = 'rating'
+    AVG_RATING = 'avg_rating'
 
     AVG_SCORE = 'avg_score'
 
@@ -35,11 +35,11 @@ class StockNewsAnalyzer(object):
 
         stock = self.__gather_stock_for_ticker(stock_ticker)
 
-        # self.logger.info('Rating ' + stock.ticker)
+        self.logger.info('Rating ' + stock.ticker)
 
-        # articles = self.news_collector.collect_news_for_stock(stock)
+        articles = self.news_collector.collect_news_for_stock(stock)
 
-        # self.news_rater.rate_news(articles,stock)
+        self.news_rater.rate_news(articles,stock)
 
         self.stock_rater.rate_stock(stock)
 
@@ -91,9 +91,9 @@ class StockNewsAnalyzer(object):
 
         rating = Rating.select(fn.AVG(Rating.value)).join(StockRating, JOIN.INNER).where((StockRating.stock_ticker == stock) & (Rating.rating_date == date.today().strftime('%Y-%m-%d'))).scalar()
 
-        avg_score = ArticleScore.select(fn.AVG(ArticleScore.score)).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where(Article.save_date == date.today().strftime('%Y-%m-%d')).scalar()
+        avg_score = ArticleScore.select(fn.AVG(ArticleScore.score)).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((StockArticle.stock_ticker == stock) & (Article.save_date == date.today().strftime('%Y-%m-%d'))).scalar()
 
-        report_data[self.RATING] = rating
+        report_data[self.AVG_RATING] = rating
 
         report_data[self.AVG_SCORE] = avg_score
 

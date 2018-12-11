@@ -10,6 +10,11 @@ class DataSource(object):
 
         self.source_url = source_url
 
+        self.headers = {
+            'User-Agent' : 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:63.0) Gecko/20100101 Firefox/63.0',
+            'Accept' : 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Encoding' : 'gzip, deflate, br'}
+
         self.logger = logging.getLogger()
 
     def construct_url(self,stock):
@@ -50,9 +55,7 @@ class RatingSource(DataSource):
 
         url = self.construct_url(stock)
 
-        headers = {'User-Agent': 'My User Agent 1.0','From': 'youremail@domain.com'}
-
-        response = requests.get(url,allow_redirects=True,headers=headers)
+        response = requests.get(url,allow_redirects=True,headers=self.headers)
 
         text = response.text
 
@@ -64,15 +67,15 @@ class RatingSource(DataSource):
 
                 rating_value = self.parse_rating(rating_data[0].strip().upper())
 
-                print('{} : {}'.format(self.__str__(), rating_value))
-
                 if rating_value is not None: 
 
                     existing_rating = Rating.get_or_none(value=rating_value,source=self.__str__(),rating_date=date.today().__str__())
 
                     if existing_rating is None: 
                         
-                        rating = Rating.create(value=rating_value,source=self.__str__(),rating_date=date.today().__str__()).save()
+                        rating = Rating.create(value=rating_value,source=self.__str__(),rating_date=date.today().__str__())
+
+                        rating.save()
 
                         StockRating.create(stock_ticker=stock,rating_id=rating).save()
 
@@ -82,8 +85,8 @@ class RatingSource(DataSource):
 
         if 'BUY' in raw_rating: return 1
 
-        elif 'HOLD' in raw_rating or 'Neutral' in raw_rating: 0
+        if 'HOLD' in raw_rating or 'Neutral' in raw_rating: return 0
 
-        elif 'SELL' in raw_rating: return -1
+        if 'SELL' in raw_rating: return -1
 
         return None

@@ -61,9 +61,7 @@ class NewsSourceRegex(NewsSource):
 
         try:
 
-            headers = {'User-Agent':'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:63.0) Gecko/20100101 Firefox/63.0'}
-
-            response = requests.get(self.construct_url(stock),headers = headers)
+            response = requests.get(self.construct_url(stock),headers = self.headers)
 
             response_text = response.text
 

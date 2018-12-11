@@ -1,17 +1,2 @@
-2018-12-10 07:02:59,891 data_sources.py:__init__:35           INFO     Loaded NewsSource: articlefeeds.nasdaq.com
-2018-12-10 07:02:59,891 data_sources.py:__init__:35           INFO     Loaded NewsSource: www.thestreet.com
-2018-12-10 07:02:59,891 data_sources.py:__init__:35           INFO     Loaded NewsSource: search.dailystocks.com
-2018-12-10 07:02:59,891 data_sources.py:__init__:35           INFO     Loaded NewsSource: api.iextrading.com
-2018-12-10 07:02:59,891 data_sources.py:__init__:35           INFO     Loaded NewsSource: midlands.robinhood.com
-2018-12-10 07:02:59,892 data_sources.py:__init__:35           INFO     Loaded NewsSource: newsapi.org
-2018-12-10 07:02:59,892 news_collector.py:__init__:15           INFO     StockNewsCollector Loaded.
-2018-12-10 07:02:59,917 news_rater.py:__init__:17           INFO     StockNewsRater Loaded.
-2018-12-10 07:02:59,918 data_sources.py:__init__:47           INFO     Loaded RatingSource: www.zacks.com
-2018-12-10 07:02:59,918 data_sources.py:__init__:47           INFO     Loaded RatingSource: www.thestreet.com
-2018-12-10 07:02:59,918 data_sources.py:__init__:47           INFO     Loaded RatingSource: stock.helpisland.com
-2018-12-10 07:02:59,918 data_sources.py:__init__:47           INFO     Loaded RatingSource: www.superstockscreener.com
-2018-12-10 07:02:59,918 data_sources.py:__init__:47           INFO     Loaded RatingSource: www.marketbeat.com
-2018-12-10 07:02:59,918 stock_rater.py:__init__:14           INFO     StockRater Loaded.
-2018-12-10 07:02:59,919 stock_news_analyzer.py:__init__:32           INFO     StockNewsAnalzer Loaded.
-2018-12-10 07:02:59,926 stock_rater.py:rate_stock:28           INFO     Rating AMD
-2018-12-10 07:03:00,423 data_sources.py:collect_data_from_source_for_stock:79           ERROR    Status Code for www.thestreet.com was not 200: 404
+2018-12-11 06:44:49,693 histogram_generator.py:__init__:19           INFO     HistogramGenerator Loaded.
+2018-12-11 06:44:49,695 histogram_generator.py:generate_histogram_for_stock:27           INFO     Generating histogram for NVDA

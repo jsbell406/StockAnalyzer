@@ -30,6 +30,6 @@ class HistogramGenerator(object):
 
             plt.hist(scores, bins=10, range=(-1,1),label='Scores ({})'.format(len(scores)))
 
-            fig.canvas.set_window_title(stock.ticker)
+            # fig.canvas.set_window_title(stock.ticker)
 
             plt.show()    
