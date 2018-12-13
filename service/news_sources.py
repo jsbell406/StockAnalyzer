@@ -6,6 +6,7 @@ import time
 import re
 from service.models import Article
 from service.data_sources import NewsSource
+from api_keys import news_api_key
 
 class NewsSourceRss(NewsSource):
 
@@ -91,11 +92,9 @@ class NewsSourceRegex(NewsSource):
 
 class NewsSourceJSON(NewsSource):
 
-    def __init__(self,source_url,api_key=''):
+    def __init__(self,source_url):
 
         super().__init__(source_url)
-
-        self.api_key = api_key
 
     def collect_data_from_source_for_stock(self,stock):
 
@@ -230,7 +229,7 @@ class NewsApi(NewsSourceJSON):
 
     def __init__(self):
 
-        super().__init__('https://newsapi.org/v2/everything?q={}&sources=bloomberg,business-insider,cnbc,fortune,the-wall-street-journal&sortBy=publishedAt&apiKey=ac38010a4adf48169ac1d2493a433a29')
+        super().__init__('https://newsapi.org/v2/everything?q={}&sources=bloomberg,business-insider,cnbc,fortune,the-wall-street-journal&sortBy=publishedAt&apiKey=' + news_api_key)
 
     def convert_json_to_articles(self,response_json):
 
