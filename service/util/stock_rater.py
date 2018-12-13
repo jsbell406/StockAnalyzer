@@ -1,7 +1,7 @@
 import logging
 import threading
 import time
-from service.rating_sources import *
+from service.data_sources.rating_sources import *
 
 class StockRater(object):
 

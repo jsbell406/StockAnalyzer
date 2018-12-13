@@ -2,7 +2,7 @@ import logging
 import re
 import requests
 from datetime import date
-from service.models import Rating, StockRating
+from service.data_sources.models import Rating, StockRating
 
 class DataSource(object):
 

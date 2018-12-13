@@ -1,4 +1,4 @@
-from service.data_sources import RatingSource
+from service.data_sources.data_sources import RatingSource
 
 class Zacks(RatingSource):
 

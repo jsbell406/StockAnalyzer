@@ -1,6 +1,11 @@
+import os
 from peewee import *
 
-database = SqliteDatabase('service/StockNews.db', **{})
+current_dir = os.path.dirname(os.path.realpath(__file__))
+
+db_path = current_dir + '/StockNews.db'
+
+database = SqliteDatabase(db_path, **{})
 
 class UnknownField(object):
     def __init__(self, *_, **__): pass

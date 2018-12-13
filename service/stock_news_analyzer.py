@@ -6,10 +6,10 @@ from datetime import datetime, date
 from peewee import IntegrityError
 import requests
 import html
-from service.news_collector import NewsCollector
-from service.news_rater import NewsRater
-from service.stock_rater import StockRater
-from service.models import *
+from service.news_analysis.news_collector import NewsCollector
+from service.news_analysis.news_rater import NewsRater
+from service.util.stock_rater import StockRater
+from service.data_sources.models import *
 
 class StockNewsAnalyzer(object):
 

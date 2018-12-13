@@ -4,7 +4,7 @@ import time
 from datetime import datetime, date, timedelta
 from nltk import tokenize
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-from service.models import Article, Stock, StockArticle, ArticleScore
+from service.data_sources.models import Article, Stock, StockArticle, ArticleScore
 
 class NewsRater(object):
 

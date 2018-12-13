@@ -1,9 +1,8 @@
 import sys
 import os
-from service.histogram_generator import HistogramGenerator
+from service.util.histogram_generator import HistogramGenerator
 from service.stock_news_analyzer import StockNewsAnalyzer
-from service.models import Stock
-from service.histogram_generator import HistogramGenerator
+from service.data_sources.models import Stock
 
 if __name__ == '__main__':
 

@@ -4,9 +4,9 @@ import requests
 from datetime import datetime, date, timedelta
 import time
 import re
-from service.models import Article
-from service.data_sources import NewsSource
-from service.api_keys import news_api_key
+from service.data_sources.models import Article
+from service.data_sources.data_sources import NewsSource
+from service.news_analysis.api_keys import news_api_key
 
 class NewsSourceRss(NewsSource):
 

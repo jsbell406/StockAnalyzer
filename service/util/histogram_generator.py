@@ -6,7 +6,7 @@ from matplotlib import colors
 from matplotlib.ticker import PercentFormatter
 from datetime import datetime, date, timedelta
 from peewee import JOIN
-from service.models import Stock, ArticleScore, Article, StockArticle
+from service.data_sources.models import Stock, ArticleScore, Article, StockArticle
 
 class HistogramGenerator(object):
 
