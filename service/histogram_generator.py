@@ -36,18 +36,6 @@ class HistogramGenerator(object):
 
     def generate_histogram_for_stocks(self,stock_tickers):
 
-        # amd_scores = [article_score.score for article_score in ArticleScore.select().join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((StockArticle.stock_ticker == 'AMD') & (Article.save_date == date.today().__str__()))]
-
-        # nvda_scores = [article_score.score for article_score in ArticleScore.select().join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((StockArticle.stock_ticker == 'NVDA') & (Article.save_date == date.today().__str__()))]
-
-        # plt.hist([amd_scores,nvda_scores], bins=10, range=(-1,1), label=['AMD','NVDA'])
-
-        # plt.legend(prop={'size': 10})
-
-        # plt.show()   
-
-
-
         stocks = [Stock.get_or_none(ticker=stock_ticker) for stock_ticker in stock_tickers if Stock.get_or_none(ticker=stock_ticker) is not None]
 
         target_stocks = [stock.ticker for stock in stocks]
