@@ -1,5 +1,6 @@
 import sys
 import os
+import PySimpleGui as sg
 from service.util.histogram_generator import HistogramGenerator
 from service.stock_news_analyzer import StockNewsAnalyzer
 from service.data_sources.models import Stock
