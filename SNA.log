@@ -1,2 +1,2 @@
-2018-12-11 06:44:49,693 histogram_generator.py:__init__:19           INFO     HistogramGenerator Loaded.
-2018-12-11 06:44:49,695 histogram_generator.py:generate_histogram_for_stock:27           INFO     Generating histogram for NVDA
+2018-12-13 05:54:29,880 histogram_generator.py:__init__:19           INFO     HistogramGenerator Loaded.
+2018-12-13 05:54:29,884 histogram_generator.py:generate_histogram_for_stocks:59           INFO     Generating histogram for AMD, NVDA
