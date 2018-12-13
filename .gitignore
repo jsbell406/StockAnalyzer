@@ -3,3 +3,5 @@
 __pycache__/
 sna_env/
 wills_api_key.txt
+handle_git.py
+reminders.txt

@@ -1,12 +1,4 @@
 BEGIN TRANSACTION;
-
-CREATE TABLE IF NOT EXISTS `Stock_Recommendation` (
-	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-	`stock_ticker`	TEXT,
-	`recommendation_date`	TEXT,
-	FOREIGN KEY(`stock_ticker`) REFERENCES `Stock`(`ticker`)
-);
-
 CREATE TABLE IF NOT EXISTS `Stock_Rating` (
 	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
 	`stock_ticker`	TEXT NOT NULL,
@@ -14,7 +6,6 @@ CREATE TABLE IF NOT EXISTS `Stock_Rating` (
 	FOREIGN KEY(`rating_id`) REFERENCES `Rating`(`id`),
 	FOREIGN KEY(`stock_ticker`) REFERENCES `Stock`(`ticker`)
 );
-
 CREATE TABLE IF NOT EXISTS `Stock_Article` (
 	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
 	`stock_ticker`	TEXT NOT NULL,
@@ -22,99 +13,12 @@ CREATE TABLE IF NOT EXISTS `Stock_Article` (
 	FOREIGN KEY(`stock_ticker`) REFERENCES `Stock`(`ticker`),
 	FOREIGN KEY(`article_id`) REFERENCES `Article`(`id`)
 );
-
 CREATE TABLE IF NOT EXISTS `Stock` (
 	`ticker`	TEXT NOT NULL UNIQUE,
 	`name`	TEXT,
 	`market`	TEXT,
 	PRIMARY KEY(`ticker`)
 );
-
-CREATE TABLE IF NOT EXISTS `Score` (
-	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-	`value`	REAL
-);
-
-CREATE TABLE IF NOT EXISTS `Rating` (
-	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-	`value`	INTEGER NOT NULL,
-	`rating_date`	TEXT
-);
-
-CREATE TABLE IF NOT EXISTS `Rater_Rating` (
-	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-	`rater_id`	INTEGER NOT NULL,
-	`rating_id`	INTEGER NOT NULL,
-	FOREIGN KEY(`rating_id`) REFERENCES `Rating`(`id`),
-	FOREIGN KEY(`rater_id`) REFERENCES `Rater`(`id`)
-);
-
-CREATE TABLE IF NOT EXISTS `Rater` (
-	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-	`name`	TEXT
-);
-
-CREATE TABLE IF NOT EXISTS `Content_Type` (
-	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-	`type`	TEXT NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS `Content_Score` (
-	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-	`content_id`	INTEGER NOT NULL,
-	`score_id`	INTEGER NOT NULL,
-	FOREIGN KEY(`score_id`) REFERENCES `Score`(`id`),
-	FOREIGN KEY(`content_id`) REFERENCES `Content`(`id`)
-);
-
-CREATE TABLE IF NOT EXISTS `Content` (
-	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-	`text`	TEXT NOT NULL,
-	`content_type`	INTEGER NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS `Article_Content` (
-	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-	`article`	INTEGER NOT NULL,
-	`content`	INTEGER NOT NULL,
-	FOREIGN KEY(`content`) REFERENCES `Content`(`id`),
-	FOREIGN KEY(`article`) REFERENCES `Article`(`id`)
-);
-
-CREATE TABLE IF NOT EXISTS `Article` (
-	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-	`url`	TEXT NOT NULL,
-	`publish_date`	TEXT,
-	`save_date`	TEXT
-);
-
-CREATE TRIGGER trg_stock_recommendation_recommendation_date 
-AFTER INSERT ON Stock_Recommendation 
-BEGIN 
-UPDATE Stock_Recommendation 
-SET recommendation_date = date('now')
- WHERE id = NEW.id; 
- END;
-
-CREATE TRIGGER trg_rating_rating_date 
-AFTER INSERT ON Rating 
-BEGIN 
-UPDATE Rating 
-SET rating_date = date('now') 
-WHERE id = NEW.id; 
-END;
-
-CREATE TRIGGER trg_article_save_date
-AFTER INSERT
-ON Article
-BEGIN
-	UPDATE Article
-	SET save_date = date('now')
-	WHERE id = NEW.id;
-END;
-
--- Inserting Required Data
-
 INSERT INTO `Stock` (ticker,name,market) VALUES ('A','AGILENT TECHNOLOGIES INC','NASDAQ'),
  ('AA','Arconic Inc','NASDAQ'),
  ('AAAP','Advanced Accelerator Applications S.A.','NASDAQ'),
@@ -5143,7 +5047,34 @@ INSERT INTO `Stock` (ticker,name,market) VALUES ('A','AGILENT TECHNOLOGIES INC',
  ('ZX','China Zenix Auto International Limited American Depositary Shares each representing four.','NYSE'),
  ('ZYNE','Zynerba Pharmaceuticals, Inc.','NYSE'),
  ('GUSH','Direxion Daily S&P Oil & Gas Exp. & Prod. Bull 3X Shares','NYSE');
-INSERT INTO `Content_Type` (id,type) VALUES (1,'headline'),
- (2,'body');
-
+CREATE TABLE IF NOT EXISTS `Rating` (
+	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	`source`	TEXT,
+	`value`	INTEGER NOT NULL,
+	`rating_date`	TEXT
+);
+CREATE TABLE IF NOT EXISTS `Article_Score` (
+	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	`article_id`	INTEGER NOT NULL,
+	`scored_content`	TEXT NOT NULL,
+	`score`	REAL NOT NULL,
+	FOREIGN KEY(`article_id`) REFERENCES `Article`(`id`)
+);
+CREATE TABLE IF NOT EXISTS `Article` (
+	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+	`url`	TEXT NOT NULL,
+	`title`	TEXT,
+	`summary`	TEXT,
+	`publish_date`	TEXT,
+	`save_date`	TEXT
+);
+CREATE TRIGGER trg_rating_rating_date AFTER INSERT ON Rating BEGIN UPDATE Rating SET rating_date = date('now') WHERE id = NEW.id; END;
+CREATE TRIGGER trg_article_save_date
+AFTER INSERT
+ON Article
+BEGIN
+	UPDATE Article
+	SET save_date = date('now')
+	WHERE id = NEW.id;
+END;
 COMMIT;
