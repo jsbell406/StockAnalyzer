@@ -3,12 +3,15 @@ from multiprocessing.pool import ThreadPool
 import time
 from service.data_sources.news_sources import Nasdaq, TheStreet, DailyStocks, IEX, RobinHood, NewsApi
 from service.data_sources.models import Stock, Article
+from service.news_analysis.api_keys import no_news_api_key, news_api_key
 
 class NewsCollector(object):
 
     def __init__(self):
 
-        self.news_sources = [Nasdaq(), TheStreet(), DailyStocks(), IEX(), RobinHood(), NewsApi()]
+        self.news_sources = [Nasdaq(), TheStreet(), DailyStocks(), IEX(), RobinHood()]
+
+        if news_api_key != no_news_api_key and len(news_api_key.strip()) > 0: self.news_sources.append(NewsApi())
 
         self.logger = logging.getLogger()
 
