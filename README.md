@@ -79,9 +79,9 @@ python3 histogram_generator.py NVDA AMD
 
 - [peewee](https://pypi.org/project/peewee/): Peewee is a simple and small ORM. It has few (but expressive) concepts, making it easy to learn and intuitive to use.
     - Also made use of it's [pwiz script](http://docs.peewee-orm.com/en/latest/peewee/playhouse.html#pwiz-a-model-generator) which was incredibly useful.
-- [feedparser](https://pypi.org/project/feedparser/)
-- [requests](https://pypi.org/project/requests/)
-- [nltk](https://pypi.org/project/nltk/)
-- [vaderSentiment](https://pypi.org/project/vaderSentiment/)
-- [matplotlib](https://pypi.org/project/matplotlib/)
-- [numpy](https://pypi.org/project/numpy/)
+- [feedparser](https://pypi.org/project/feedparser/): Parse Atom and RSS feeds in Python.
+- [requests](https://pypi.org/project/requests/): HTTP for Humans
+- [nltk](https://pypi.org/project/nltk/): Natural Language Toolkit
+- [vaderSentiment](https://pypi.org/project/vaderSentiment/): VADER-Sentiment-Analysis 
+- [matplotlib](https://pypi.org/project/matplotlib/): Python plotting package
+- [numpy](https://pypi.org/project/numpy/): Aarray processing for numbers, strings, records, and objects.
