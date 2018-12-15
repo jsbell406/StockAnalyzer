@@ -170,8 +170,8 @@ class StockNewsAnalyzer(object):
         WHERE sa.stock_ticker = 'STOCK TICKER'
         AND a.save_date = 'TODAYS DATE IN Y-M-D FORMAT'
         '''
-        avg_score = ArticleScore.select(fn.AVG(ArticleScore.score)).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((StockArticle.stock_ticker == stock) & (Article.save_date == date.today().strftime('%Y-%m-%d'))).scalar()
 
+        avg_score = ArticleScore.select(fn.AVG(ArticleScore.score)).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((StockArticle.stock_ticker == stock) & (Article.save_date == date.today().strftime('%Y-%m-%d'))).scalar()
 
         report_data[self.AVG_RATING] = rating
 

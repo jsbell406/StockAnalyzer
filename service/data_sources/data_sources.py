@@ -99,6 +99,8 @@ class RatingDataSource(DataSource):
             stock {Stock} -- The Stock to collect Rating data for.
         '''
 
+        rating = None
+
         # E.g. ratingsite.com/{} -> ratingsite.com/TSLA
         url = self.construct_url(stock)
 
@@ -115,21 +117,11 @@ class RatingDataSource(DataSource):
                 # Convert the raw rating data to either a 1 for Buy, 0 for Hold, or -1 for Sell.
                 rating_value = self.parse_rating(rating_data[0].strip().upper())
 
-                if rating_value is not None: 
-
-                    # Make sure you don't save what's already saved.
-                    existing_rating = Rating.get_or_none(value=rating_value,source=self.__str__(),rating_date=date.today().__str__())
-
-                    if existing_rating is None: 
-                        
-                        # If it's not saved, save it.
-                        rating = Rating.create(value=rating_value,source=self.__str__(),rating_date=date.today().__str__())
-
-                        rating.save()
-
-                        StockRating.create(stock_ticker=stock,rating_id=rating).save()
+                rating = Rating(value=rating_value,source=self.__str__(),rating_date=date.today().__str__())
 
         else: self.logger.error('Status Code for {} was not 200: {}'.format(self.__str__(),response.status_code))
+
+        return rating
 
     def parse_rating(self,raw_rating):
         '''Parses raw rating data, returning eithet a 1 for Buy, 0 for Hold, or -1 for Sell.
