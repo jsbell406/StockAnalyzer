@@ -1,14 +1,2 @@
-2018-12-14 06:42:17,578 data_sources.py:__init__:40           INFO     Loaded NewsDataSource: articlefeeds.nasdaq.com
-2018-12-14 06:42:17,579 data_sources.py:__init__:40           INFO     Loaded NewsDataSource: www.thestreet.com
-2018-12-14 06:42:17,579 data_sources.py:__init__:40           INFO     Loaded NewsDataSource: search.dailystocks.com
-2018-12-14 06:42:17,579 data_sources.py:__init__:40           INFO     Loaded NewsDataSource: api.iextrading.com
-2018-12-14 06:42:17,579 data_sources.py:__init__:40           INFO     Loaded NewsDataSource: midlands.robinhood.com
-2018-12-14 06:42:17,579 news_collector.py:__init__:18           INFO     StockNewsCollector Loaded.
-2018-12-14 06:42:17,604 news_rater.py:__init__:17           INFO     StockNewsRater Loaded.
-2018-12-14 06:42:17,605 data_sources.py:__init__:52           INFO     Loaded RatingDataSource: www.zacks.com
-2018-12-14 06:42:17,605 data_sources.py:__init__:52           INFO     Loaded RatingDataSource: www.thestreet.com
-2018-12-14 06:42:17,605 data_sources.py:__init__:52           INFO     Loaded RatingDataSource: stock.helpisland.com
-2018-12-14 06:42:17,605 data_sources.py:__init__:52           INFO     Loaded RatingDataSource: www.superstockscreener.com
-2018-12-14 06:42:17,605 data_sources.py:__init__:52           INFO     Loaded RatingDataSource: www.marketbeat.com
-2018-12-14 06:42:17,606 stock_rater.py:__init__:14           INFO     StockRater Loaded.
-2018-12-14 06:42:17,606 stock_news_analyzer.py:__init__:32           INFO     StockNewsAnalzer Loaded.
+2018-12-15 08:06:44,376 histogram_generator.py:__init__:22           INFO     HistogramGenerator Loaded.
+2018-12-15 08:06:44,380 histogram_generator.py:generate_histogram_for_stocks:72           INFO     Generating histogram for NVDA, AMD

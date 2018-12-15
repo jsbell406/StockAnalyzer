@@ -99,6 +99,8 @@ class RatingDataSource(DataSource):
             stock {Stock} -- The Stock to collect Rating data for.
         '''
 
+        self.logger.info('Rating {} via {}'.format(stock.ticker,self.__str__()))
+
         rating = None
 
         # E.g. ratingsite.com/{} -> ratingsite.com/TSLA

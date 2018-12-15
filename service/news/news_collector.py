@@ -1,9 +1,9 @@
 import logging
 from multiprocessing.pool import ThreadPool
 import time
-from service.data_sources.news_data_sources import Nasdaq, TheStreet, DailyStocks, IEX, RobinHood, NewsApi
+from service.news.news_data_sources import Nasdaq, TheStreet, DailyStocks, IEX, RobinHood, NewsApi
 from service.data_sources.models import Stock, Article
-from service.news_analysis.api_keys import no_news_api_key, news_api_key
+from service.news.api_keys import no_news_api_key, news_api_key
 
 class NewsCollector(object):
     '''Collects News'''

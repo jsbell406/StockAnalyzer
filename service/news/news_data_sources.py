@@ -6,7 +6,7 @@ import time
 import re
 from service.data_sources.models import Article
 from service.data_sources.data_sources import NewsDataSource
-from service.news_analysis.api_keys import news_api_key
+from service.news.api_keys import news_api_key
 
 class RssNewsDataSource(NewsDataSource):
     '''A Rss Source for News-Specific Data.
