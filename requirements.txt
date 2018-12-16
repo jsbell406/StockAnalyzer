@@ -32,7 +32,7 @@ pyOpenSSL==18.0.0
 pyparsing==2.3.0
 PySocks==1.6.8
 python-dateutil==2.7.5
-requests==2.19.1
+requests==2.21.0
 ruamel-yaml==0.15.46
 singledispatch==3.4.0.3
 six==1.11.0
