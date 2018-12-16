@@ -64,7 +64,7 @@ Average Buy/Hold/Sell rating for NVDA: 0
 python3 histogram_generator.py NVDA
 ```
 
-![NVDA](NVDA_20181215.png)
+![NVDA](images/NVDA_20181215.png)
 
 #### Multiple Stocks
 
@@ -72,7 +72,7 @@ python3 histogram_generator.py NVDA
 python3 histogram_generator.py NVDA AMD
 ```
 
-![NVDA & AMD](NVDA_AMD_20181215.png)
+![NVDA & AMD](images/NVDA_AMD_20181215.png)
 
 ## Built With
 
