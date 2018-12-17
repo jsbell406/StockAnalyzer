@@ -23,6 +23,29 @@ class StockRater(object):
 
         self.logger.info('StockRater Loaded.')
 
+    def rate_stocks(self,stock_tickers):
+        '''Rates a set of Stocks.
+        
+        Arguments:
+            stock_tickers {list} -- The Stocks to rate.
+        '''
+
+        self.logger.info('Rating Stocks: ' + ', '.join(stock_tickers))
+
+        stock_ticker_rating_map = {}
+
+        for index,stock_ticker in enumerate(stock_tickers):
+
+            stock_ticker_rating_map[stock_ticker] = self.rate_stock(stock_ticker)
+
+            if index < len(stock_tickers) - 1: 
+                
+                self.logger.info('Sleeping for five seconds.')
+                
+                time.sleep(5)
+
+        return stock_ticker_rating_map
+
     def rate_stock(self,stock_ticker):
         '''Rates a given Stock. Stock is given a (1/0/-1) rating for (Buy/Hold/Sell) respectively.
 
@@ -153,7 +176,7 @@ def create_arg_parser():
 
     arg_parser = argparse.ArgumentParser(description='Rates a Stock based on what other Rating sources are saying. The average rating is returned, whose value is in the range of 1 to -1. 1 = Buy, 0 = Hold, -1 = Sell. ')
 
-    arg_parser.add_argument('stock_ticker', type=str, help='The Stock ticker identifying the stock to rate.')
+    arg_parser.add_argument('stock_tickers', type=str, nargs='+', help='One or more Stock tickers identifying the stock(s) to rate.')
 
     return arg_parser
 
@@ -163,6 +186,16 @@ if __name__ == "__main__":
 
     args = arg_parser.parse_args()
 
-    avg_rating = StockRater().rate_stock(args.stock_ticker)
+    stock_tickers = args.stock_tickers
 
-    print('Average Buy/Hold/Sell rating for {}: {}'.format(args.stock_ticker,avg_rating))
+    if len(stock_tickers) == 1:
+
+        avg_rating = StockRater().rate_stock(stock_tickers[0])
+
+        print('Average Buy/Hold/Sell rating for {}: {}'.format(stock_tickers[0],avg_rating))
+
+    else:
+
+        stock_ticker_rating_map = StockRater().rate_stocks(stock_tickers)
+
+        for stock_ticker in stock_ticker_rating_map.keys(): print('Average Sentiment Score for {}: {}'.format(stock_ticker,stock_ticker_rating_map[stock_ticker]))

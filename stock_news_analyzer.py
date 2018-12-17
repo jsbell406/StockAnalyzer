@@ -27,6 +27,27 @@ class StockNewsAnalyzer(object):
 
         self.logger.info('StockNewsAnalzer Loaded.')
 
+    def analyze_stocks(self,stock_tickers):
+        '''Analyzes the news for a set of stocks.
+        
+        Arguments:
+            stock_tickers {list} -- The stock tickers to analyze the news for.
+        '''
+        self.logger.info('Analyzing Stocks: ' + ', '.join(stock_tickers))
+
+        stock_ticker_avg_score_map = {}
+
+        for index, stock_ticker in enumerate(stock_tickers):
+
+            stock_ticker_avg_score_map[stock_ticker] = self.analyze_stock(stock_ticker)
+
+            self.logger.info('Sleeping for five seconds.')
+
+            if index < len(stock_tickers) - 1: time.sleep(5)
+
+        return stock_ticker_avg_score_map
+
+
     def analyze_stock(self,stock_ticker):
         '''Analyzes the news for a given stock.
         
@@ -39,7 +60,7 @@ class StockNewsAnalyzer(object):
         # Gather a Stock object for the given ticker.
         stock = self.__gather_stock_for_ticker(stock_ticker)
 
-        self.logger.info('Rating ' + stock.ticker)
+        self.logger.info('Analyzing ' + stock.ticker)
 
         # Perform the analysis
         articles = self.news_collector.collect_news_for_stock(stock)
@@ -129,7 +150,7 @@ def create_arg_parser():
 
     arg_parser = argparse.ArgumentParser(description='Performs text analysis and scores Articles written for, or mentioning a particular Stock. The average of all scores is returned, whose value is in the range of 1 to -1. A score closer to 1 is more positive and vice versa.')
 
-    arg_parser.add_argument('stock_ticker', type=str, help='The Stock ticker identifying the stock to analyze.')
+    arg_parser.add_argument('stock_tickers', type=str, nargs='+', help='One or more Stock tickers identifying the stock(s) to analyze.')
 
     return arg_parser
 
@@ -139,6 +160,16 @@ if __name__ == "__main__":
 
     args = arg_parser.parse_args()
 
-    avg_score = StockNewsAnalyzer().analyze_stock(args.stock_ticker)
+    stock_tickers = args.stock_tickers
 
-    print('Average Sentiment Score for {}: {}'.format(args.stock_ticker,avg_score))
+    if len(stock_tickers) == 1:
+
+        avg_score = StockNewsAnalyzer().analyze_stock(args.stock_tickers[0])
+
+        print('Average Sentiment Score for {}: {}'.format(args.stock_tickers[0],avg_score))
+
+    else:
+
+        stock_ticker_avg_score_map = StockNewsAnalyzer().analyze_stocks(stock_tickers)
+
+        for stock_ticker in stock_ticker_avg_score_map.keys(): print('Average Sentiment Score for {}: {}'.format(stock_ticker,stock_ticker_avg_score_map[stock_ticker]))
