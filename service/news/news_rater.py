@@ -38,9 +38,9 @@ class NewsRater(object):
                 self.logger.info('Scoring ' + article.url)
 
                 # Rate the title and summary.
-                title_score = self.__score_content(article.title)
+                title_score = self.__score_content(article.title) if article.title is not None else 0
 
-                summary_score = self.__score_content(article.summary)
+                summary_score = self.__score_content(article.summary) if article.summary is not None else 0
 
                 if title_score != 0 or summary_score != 0:
 

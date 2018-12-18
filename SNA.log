@@ -1,12 +1,12 @@
-2018-12-17 07:12:00,761 data_sources.py:__init__:93           INFO     Loaded RatingDataSource: www.zacks.com
-2018-12-17 07:12:00,761 data_sources.py:__init__:93           INFO     Loaded RatingDataSource: www.thestreet.com
-2018-12-17 07:12:00,762 data_sources.py:__init__:93           INFO     Loaded RatingDataSource: stock.helpisland.com
-2018-12-17 07:12:00,762 data_sources.py:__init__:93           INFO     Loaded RatingDataSource: www.superstockscreener.com
-2018-12-17 07:12:00,762 data_sources.py:__init__:93           INFO     Loaded RatingDataSource: www.marketbeat.com
-2018-12-17 07:12:00,762 stock_rater.py:__init__:24           INFO     StockRater Loaded.
-2018-12-17 07:12:00,764 stock_rater.py:rate_stock:63           INFO     Rating NVDA
-2018-12-17 07:12:00,767 data_sources.py:collect_data_from_source_for_stock:102          INFO     Rating NVDA via www.zacks.com
-2018-12-17 07:12:00,767 data_sources.py:collect_data_from_source_for_stock:102          INFO     Rating NVDA via www.thestreet.com
-2018-12-17 07:12:00,767 data_sources.py:collect_data_from_source_for_stock:102          INFO     Rating NVDA via stock.helpisland.com
-2018-12-17 07:12:00,767 data_sources.py:collect_data_from_source_for_stock:102          INFO     Rating NVDA via www.superstockscreener.com
-2018-12-17 07:12:00,768 data_sources.py:collect_data_from_source_for_stock:102          INFO     Rating NVDA via www.marketbeat.com
+2018-12-18 06:46:32,247 data_sources.py:__init__:93           INFO     Loaded RatingDataSource: www.zacks.com
+2018-12-18 06:46:32,248 data_sources.py:__init__:93           INFO     Loaded RatingDataSource: www.thestreet.com
+2018-12-18 06:46:32,248 data_sources.py:__init__:93           INFO     Loaded RatingDataSource: stock.helpisland.com
+2018-12-18 06:46:32,248 data_sources.py:__init__:93           INFO     Loaded RatingDataSource: www.superstockscreener.com
+2018-12-18 06:46:32,248 data_sources.py:__init__:93           INFO     Loaded RatingDataSource: www.marketbeat.com
+2018-12-18 06:46:32,248 stock_rater.py:__init__:24           INFO     StockRater Loaded.
+2018-12-18 06:46:32,250 stock_rater.py:rate_stock:63           INFO     Rating SIR
+2018-12-18 06:46:32,260 data_sources.py:collect_data_from_source_for_stock:102          INFO     Rating SIR via www.zacks.com
+2018-12-18 06:46:32,260 data_sources.py:collect_data_from_source_for_stock:102          INFO     Rating SIR via www.thestreet.com
+2018-12-18 06:46:32,266 data_sources.py:collect_data_from_source_for_stock:102          INFO     Rating SIR via stock.helpisland.com
+2018-12-18 06:46:32,266 data_sources.py:collect_data_from_source_for_stock:102          INFO     Rating SIR via www.superstockscreener.com
+2018-12-18 06:46:32,267 data_sources.py:collect_data_from_source_for_stock:102          INFO     Rating SIR via www.marketbeat.com
