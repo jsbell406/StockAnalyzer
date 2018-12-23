@@ -1,15 +1,18 @@
-# StockNewsAnalyzer
+# StockAnalyzer
 
-Performs text analysis and scores Articles written for, or mentioning a particular Stock.
+Performs non-technical Stock Analysis, including:
+
+- News Analysis: Aggregates news articles mentioning a given stock and rates them.
+- Rating Analysis: Aggregates Stock "Ratings" across a variety of sources, creating an average rating.
 
 ## Installation
 
 1. Clone the repo into your desired directory, step into the directory:
 
 ```bash
-git clone https://github.com/William-Lake/StockNewsAnalyzer.git
+git clone https://github.com/William-Lake/StockAnalyzer.git
 
-cd StockNewsAnalyzer
+cd StockAnalyzer
 ```
 
 2. (Optional, but *highly recommended*.) create your virtual environment:
@@ -17,7 +20,7 @@ cd StockNewsAnalyzer
 NOTE: Conda is not required, but it's what was used when creating this library.
 
 ```bash
-conda create --name=StockNewsAnalyzer_env python=3
+conda create --name=StockAnalyzer_env python=3
 ```
 
 3. Install the required libraries:
