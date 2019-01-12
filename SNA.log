@@ -1,12 +1,26 @@
-2018-12-18 06:46:32,247 data_sources.py:__init__:93           INFO     Loaded RatingDataSource: www.zacks.com
-2018-12-18 06:46:32,248 data_sources.py:__init__:93           INFO     Loaded RatingDataSource: www.thestreet.com
-2018-12-18 06:46:32,248 data_sources.py:__init__:93           INFO     Loaded RatingDataSource: stock.helpisland.com
-2018-12-18 06:46:32,248 data_sources.py:__init__:93           INFO     Loaded RatingDataSource: www.superstockscreener.com
-2018-12-18 06:46:32,248 data_sources.py:__init__:93           INFO     Loaded RatingDataSource: www.marketbeat.com
-2018-12-18 06:46:32,248 stock_rater.py:__init__:24           INFO     StockRater Loaded.
-2018-12-18 06:46:32,250 stock_rater.py:rate_stock:63           INFO     Rating SIR
-2018-12-18 06:46:32,260 data_sources.py:collect_data_from_source_for_stock:102          INFO     Rating SIR via www.zacks.com
-2018-12-18 06:46:32,260 data_sources.py:collect_data_from_source_for_stock:102          INFO     Rating SIR via www.thestreet.com
-2018-12-18 06:46:32,266 data_sources.py:collect_data_from_source_for_stock:102          INFO     Rating SIR via stock.helpisland.com
-2018-12-18 06:46:32,266 data_sources.py:collect_data_from_source_for_stock:102          INFO     Rating SIR via www.superstockscreener.com
-2018-12-18 06:46:32,267 data_sources.py:collect_data_from_source_for_stock:102          INFO     Rating SIR via www.marketbeat.com
+2019-01-11 21:29:56,348 data_sources.py:__init__:70           INFO     Loaded NewsDataSource: articlefeeds.nasdaq.com
+2019-01-11 21:29:56,349 data_sources.py:__init__:70           INFO     Loaded NewsDataSource: www.thestreet.com
+2019-01-11 21:29:56,349 data_sources.py:__init__:70           INFO     Loaded NewsDataSource: search.dailystocks.com
+2019-01-11 21:29:56,349 data_sources.py:__init__:70           INFO     Loaded NewsDataSource: api.iextrading.com
+2019-01-11 21:29:56,349 data_sources.py:__init__:70           INFO     Loaded NewsDataSource: midlands.robinhood.com
+2019-01-11 21:29:56,349 news_collector.py:__init__:21           INFO     StockNewsCollector Loaded.
+2019-01-11 21:29:56,363 news_rater.py:__init__:19           INFO     StockNewsRater Loaded.
+2019-01-11 21:29:56,363 stock_news_analyzer.py:__init__:28           INFO     StockNewsAnalzer Loaded.
+2019-01-11 21:29:56,365 stock_news_analyzer.py:analyze_stock:63           INFO     Analyzing NVDA
+2019-01-11 21:29:56,365 news_collector.py:collect_news_for_stock:35           INFO     Collecting articles for NVDA
+2019-01-11 21:29:56,368 news_data_sources.py:collect_data_from_source_for_stock:37           INFO     Collecting articles via RSS
+2019-01-11 21:29:56,372 news_data_sources.py:collect_data_from_source_for_stock:96           INFO     Collecting Articles via Requests/Regex
+2019-01-11 21:29:56,373 news_data_sources.py:collect_data_from_source_for_stock:96           INFO     Collecting Articles via Requests/Regex
+2019-01-11 21:29:56,374 news_data_sources.py:collect_data_from_source_for_stock:172          INFO     Collecting Articles via JSON
+2019-01-11 21:29:56,375 news_data_sources.py:collect_data_from_source_for_stock:172          INFO     Collecting Articles via JSON
+2019-01-11 21:29:57,749 news_rater.py:rate_news:29           INFO     Rating News
+2019-01-11 21:29:57,770 news_rater.py:rate_news:38           INFO     Scoring http://articlefeeds.nasdaq.com/~r/nasdaq/symbols/~3/TdaVcISf6kk/nvidia-announces-commercially-available-level-2-automated-driving-system-20190107-01476
+2019-01-11 21:29:57,790 news_rater.py:rate_news:38           INFO     Scoring /video/ces-2019-amd-shows-off-its-new-gpu-14829619
+2019-01-11 21:29:57,792 news_rater.py:rate_news:38           INFO     Scoring /video/trading-strategies-how-to-prepare-for-this-earnings-season-14826268
+2019-01-11 21:29:57,798 news_rater.py:rate_news:38           INFO     Scoring /investing/amd-ces-new-high-end-gpu-14829476
+2019-01-11 21:29:57,809 news_rater.py:rate_news:38           INFO     Scoring /markets/5-things-you-must-know-before-the-market-opens-monday-14824586
+2019-01-11 21:29:57,816 news_rater.py:rate_news:38           INFO     Scoring /investing/stocks/how-to-trade-squares-volatility-14825103
+2019-01-11 21:29:57,823 news_rater.py:rate_news:38           INFO     Scoring http://www.zacks.com/stock/news/346946/nxp-partners-kalray-on-adas-efforts-ups-game-in-self-drive?cid=CS-ZC-FT-346946
+2019-01-11 21:29:57,826 news_rater.py:rate_news:38           INFO     Scoring https://seekingalpha.com/article/4232660-nvidia-corporation-nvda-presents-jpmorgan-global-healthcare-broker-conference-call-transcript?source=feed_sector_transcripts
+2019-01-11 21:29:57,830 news_rater.py:rate_news:38           INFO     Scoring https://api.iextrading.com/1.0/stock/nvda/article/6042484590380573
+2019-01-11 21:29:57,834 news_rater.py:rate_news:38           INFO     Scoring https://venturebeat.com/2019/01/11/nvidia-opens-robotics-research-lab-in-seattle/

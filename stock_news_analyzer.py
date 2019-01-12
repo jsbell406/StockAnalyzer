@@ -81,7 +81,7 @@ class StockNewsAnalyzer(object):
         AND a.save_date = 'TODAYS DATE IN Y-M-D FORMAT'
         '''
 
-        avg_score = ArticleScore.select(fn.AVG(ArticleScore.score)).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((StockArticle.stock_ticker == stock) & (Article.save_date == date.today().strftime('%Y-%m-%d'))).scalar()
+        avg_score = ArticleScore.select(fn.AVG(ArticleScore.score)).join(Article, JOIN.INNER).join(StockArticle, JOIN.INNER).where((StockArticle.stock_ticker == stock.ticker) & (Article.publish_date.in_(self.__get_past_dates(0)))).scalar()
 
         return avg_score
 
@@ -144,32 +144,45 @@ class StockNewsAnalyzer(object):
 
         return name, market
 
+    def __get_past_dates(self,num_days_back):
+
+        today = date.today()
+
+        date_strings = [today.strftime('%Y-%m-%d'),]
+
+        for i in range(num_days_back):
+
+            prev_date = today - timedelta(days=i + 1)
+
+            date_strings.append(prev_date.strftime('%Y-%m-%d'))
+
+        return date_strings
+
 # MAIN METHOD ============================================
 
-def create_arg_parser():
+def parse_args():
 
     arg_parser = argparse.ArgumentParser(description='Performs text analysis and scores Articles written for, or mentioning a particular Stock. The average of all scores is returned, whose value is in the range of 1 to -1. A score closer to 1 is more positive and vice versa.')
 
     arg_parser.add_argument('stock_tickers', type=str, nargs='+', help='One or more Stock tickers identifying the stock(s) to analyze.')
 
-    return arg_parser
+    args = arg_parser.parse_args()
+
+    return args.stock_tickers
 
 if __name__ == "__main__":
 
-    arg_parser = create_arg_parser()
-
-    args = arg_parser.parse_args()
-
-    stock_tickers = args.stock_tickers
+    stock_tickers = parse_args()
 
     if len(stock_tickers) == 1:
 
-        avg_score = StockNewsAnalyzer().analyze_stock(args.stock_tickers[0])
+        avg_score = StockNewsAnalyzer().analyze_stock(stock_tickers[0])
 
-        print('Average Sentiment Score for {}: {}'.format(args.stock_tickers[0],avg_score))
+        print('Average Sentiment Score for {}: {}'.format(stock_tickers[0],avg_score))
 
     else:
 
         stock_ticker_avg_score_map = StockNewsAnalyzer().analyze_stocks(stock_tickers)
 
         for stock_ticker in stock_ticker_avg_score_map.keys(): print('Average Sentiment Score for {}: {}'.format(stock_ticker,stock_ticker_avg_score_map[stock_ticker]))
+
