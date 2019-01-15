@@ -5,3 +5,5 @@ sna_env/
 news_api_key.txt
 handle_git.py
 reminders.txt
+SNA.log
+StockNews.db
